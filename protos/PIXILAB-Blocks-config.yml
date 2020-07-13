@@ -1,0 +1,7 @@
+# Minimal Blocks root configuration file
+
+root: /home/blocks/PIXILAB-Blocks-root
+
+# Where to go when accessing server root
+serverRootRedirect: /spot/?mobile=Mob1
+
