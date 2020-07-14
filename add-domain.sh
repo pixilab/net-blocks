@@ -4,18 +4,14 @@
 # exit if/when any command fails; https://intoli.com/blog/exit-on-errors-in-bash-scripts/
 set -e
 
-helpFunction() {
+# Show help if missing parameter(s)
+if [ $# -lt 1 ]
+then
    echo "Missing required parameter(s)";
    echo
    echo "Usage: $0 <domainame>"
    echo
    exit 1 # Exit script after printing help
-}
-
-# Perform helpFunction if missing parameter(s)
-if [ -z "$1" ]
-then
-   helpFunction
 fi
 
 # Define variables from command line parameters, and some others

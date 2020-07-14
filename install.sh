@@ -6,19 +6,14 @@
 # https://stackoverflow.com/questions/821396/aborting-a-shell-script-if-any-command-returns-a-non-zero-value
 set -eu
 
-# Print help and exit
-helpFunction() {
+# Show help in case required parameters are empty
+if [ $# -lt 1 ]
+then
    echo "Missing required parameter(s)";
    echo
    echo "Usage: $0 <license-server> "
    echo
    exit 1 # Exit script after printing help
-}
-
-# Print helpFunction in case required parameters are empty
-if [ -z "$1" ]
-then
-   helpFunction
 fi
 
 # Pick up FQDN or IP address of license server
