@@ -33,12 +33,11 @@ useradd -m blocks
 #	passwd blocks
 
 # Add public keys to approve openjdk for apt
-apt-get install gnupg2
+apt-get install -y gnupg2
 wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
 
 
 # Add jfrog and certbot repositories
-# apt-get install -y software-properties-common
 apt-get install -y software-properties-common
 add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
 add-apt-repository --yes ppa:certbot/certbot
@@ -56,13 +55,14 @@ apt-get install -y adoptopenjdk-11-openj9
 # download and install codemeter support from our mirror
 wget -N http://ext.pixilab.se/outgoing/blocks/cloud-support/codemeter.deb
 apt-get install  -y ./codemeter.deb
+rm ./codemeter.deb
+
 wget -N http://ext.pixilab.se/outgoing/blocks/cloud-support/axprotector.deb
 apt-get install  -y ./axprotector.deb
+rm ./axprotector.deb
 
 # install chromium browser (used headless as web renderer by Blocks)
-apt-get install  -y chromium
-# remove unwanted codecs (yes, that's a confusing package that REMOVES codecs)
-apt-get install  -y chromium-codecs-ffmpeg
+apt-get install -y chromium
 
 # Add external license server to search list
 cmu --clear-serversearchlist
@@ -105,7 +105,7 @@ ufw allow "Nginx HTTPS"
 ufw allow http
 ufw allow https
 ufw allow ssh
-ufw enable
+ufw --force enable
 
 # Download and unpack Blocks and its "native" directory
 cd $BLOCKS_HOME
@@ -113,12 +113,16 @@ wget https://pixilab.se/outgoing/blocks/PIXILAB_Blocks_Linux.tar.gz
 tar -xzf PIXILAB_Blocks_Linux.tar.gz
 rm PIXILAB_Blocks_Linux.tar.gz
 
+# COnfigure blocks user to use same shell as root
+usermod --shell /bin/bash blocks
+cp /root/.profile /home/blocks
+
 # See Notes for installing .config/systemd/user files and enabling user systemd over ssh
 # Make user "blocks" systemd units start on boot
 loginctl enable-linger blocks
 
-chown -R blocks *
-chgrp -R blocks *
+chown -R blocks $BLOCKS_HOME
+chgrp -R blocks $BLOCKS_HOME
 
 # Check you may want to perform at this point to ensure server license can be seen
 cmu  --list-network --all-servers
