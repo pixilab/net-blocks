@@ -25,14 +25,15 @@ rm /etc/nginx/sites-enabled/default
 cp -r etc-nginx/* /etc/nginx
 sed -e "s,###DOMAIN###,$DOMAIN,g" <protos/blocks.conf >/etc/nginx/sites-enabled/blocks.conf
 
-echo "••• Configuring up Blocks, with its initial admin user"
-cp -r protos/root $BLOCKS_ROOT
+echo "••• Configuring Blocks, with its initial admin user"
+cp -R protos/root $BLOCKS_ROOT
 
 # Add Blocks' config file
 cp protos/PIXILAB-Blocks-config.yml $HOME_DIR/PIXILAB-Blocks-config.yml
 
 # Add Blocks user's systemd unit and config files
-cp -r config/* $HOME_DIR/.config/systemd/
+mkdir -p $HOME_DIR/.config
+cp -R config/* $HOME_DIR/.config/
 
 # Copy root's authorized_keys to the 'blocks' user, to provide access using same method
 mkdir -p /home/blocks/.ssh/

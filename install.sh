@@ -18,7 +18,6 @@ fi
 
 # Pick up FQDN or IP address of license server
 LICENSE_SERVER=$1
-DOMAIN=$2
 
 # Location of the Blocks user's home dir
 BLOCKS_HOME=/home/blocks
@@ -41,7 +40,6 @@ wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-k
 # Add jfrog and certbot repositories
 apt-get install -y software-properties-common
 add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
-add-apt-repository --yes ppa:certbot/certbot
 
 # Update with package info from above repos
 apt-get update
@@ -101,7 +99,6 @@ echo "••• Configuring firewall"
 # Install and configure firewall
 apt-get install ufw
 ufw allow OpenSSH
-ufw allow Nginx
 ufw allow "Nginx HTTP"
 ufw allow "Nginx HTTPS"
 ufw allow http
@@ -135,8 +132,9 @@ loginctl enable-linger blocks
 chown -R blocks $BLOCKS_HOME
 chgrp -R blocks $BLOCKS_HOME
 
-echo "••• Checking license server access (examine output, looking for your license key)"
+echo "••• Checking license server access"
 cmu  --list-network --all-servers
+echo "••• Examine output above, make sure you see your license key's serial number"
 
 # See installers/add-domain.sh for how to add the actual domain
 
