@@ -1,17 +1,17 @@
 # Scripts to build a Blocks server in the cloud
 
-Developed and tested on digitalocean droplet based on Debian 10. In the instructions below, items within <angle brackets> are placeholders, to be substituted with your own values as appropriate. Items in `monospaced font` are to be entered, one line at a time, at the server's command prompt
+Developed and tested on digitalocean droplet based on Debian 10. In the instructions below, items within angle brackets are placeholders, to be substituted with your own values as appropriate. Items in `monospaced font` are to be entered, one line at a time, at the server's command prompt
 
 ## Instructions
 Create the droplet at digitalocean.com, preferably using a public key for authentication.
 
-Add a DNS entry giving the new server a domain name (possibly using a sub-domain), and make sure it points to the IP address of the droplet. Wait for this name to propagate (you may use nslookup or similar to verify this).
+Create a DNS entry (in some suitable DNS you have control over). Specify the name new server's domain name (possibly using a sub-domain) and make sure it points to the IP address of the droplet. Wait for this name to propagate (e.g., use nslookup or similar tool to check).
 
-Log in to the droplet using ssh as the root user
+Log in to the droplet using ssh as the root user.
 
 `ssh root@<ip-of-your-droplet>`
 
-Once logged in, run the following commands
+Once logged in, run the following commands.
 
 `apt update`
 
@@ -51,7 +51,7 @@ OPTIONALLY: For the latest and greatest, update Blocks to the latest beta versio
 
 `wget http://pixilab.se/outgoing/blocks/4.3b/PIXILAN.jar`
 
-substituting the correct URL to the desired Blocks beta version, as approriate.
+IMPORTANT: Substitute the correct URL to the desired Blocks beta version above.
 
 Enable and start Blocks
 
