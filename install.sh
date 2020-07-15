@@ -9,29 +9,30 @@ set -eu
 # Show help in case required parameters are empty
 if [ $# -lt 1 ]
 then
-   echo "Missing required parameter(s)";
+   echo "Perform initial installation and server configuration";
    echo
-   echo "Usage: $0 <license-server> "
+   echo "Usage: $0 <license-server>"
    echo
    exit 1 # Exit script after printing help
 fi
 
 # Pick up FQDN or IP address of license server
 LICENSE_SERVER=$1
+DOMAIN=$2
 
 # Location of the Blocks user's home dir
 BLOCKS_HOME=/home/blocks
 
-# Bump max number of file descriptors to something more useful (for, e.g., websockets)
+echo "••• Bumping max number of file descriptors to something more useful (for, e.g., websockets)"
 FDS=5000
 echo -e "DefaultLimitNOFILE=$FDS\n" >> /etc/systemd/user.conf
 echo -e "DefaultLimitNOFILE=$FDS\n" >> /etc/systemd/system.conf
 echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/security/limits.conf
 
+echo "••• Adding the blocks user account. You can set a password later using this command:  passwd blocks"
 useradd -m blocks
-# to set password, if desired, use
-#	passwd blocks
 
+echo "••• Installing Java"
 # Add public keys to approve openjdk for apt
 apt-get install -y gnupg2
 wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
@@ -52,6 +53,7 @@ apt-get install -y adoptopenjdk-11-openj9
 # to switch java VM
 #	sudo update-alternatives --config java
 
+echo "••• Installing License Key Software"
 # download and install codemeter support from our mirror
 wget -N http://ext.pixilab.se/outgoing/blocks/cloud-support/codemeter.deb
 apt-get install  -y ./codemeter.deb
@@ -61,7 +63,7 @@ wget -N http://ext.pixilab.se/outgoing/blocks/cloud-support/axprotector.deb
 apt-get install  -y ./axprotector.deb
 rm ./axprotector.deb
 
-# install chromium browser (used headless as web renderer by Blocks)
+echo "••• Installing Chromium (used headless as web renderer by Blocks)"
 apt-get install -y chromium
 
 # Add external license server to search list
@@ -70,6 +72,8 @@ cmu --add-server $LICENSE_SERVER
 
 # Disable codemeter's webadmin, which isn't needed on the server
 systemctl disable codemeter-webadmin.service
+
+echo "••• Installing some useful command line utilities"
 
 # Command line utility to show disk performance
 apt-get install -y iotop
@@ -92,9 +96,7 @@ apt-get install -y nginx
 # Reload nginx config by
 #	nginx -s reload
 
-# Install Lets Encrypt cert support
-apt-get install -y certbot python-certbot-nginx
-# Then follow instructions here https://certbot.eff.org/lets-encrypt/debianbuster-nginx
+echo "••• Configuring firewall"
 
 # Install and configure firewall
 apt-get install ufw
@@ -106,6 +108,15 @@ ufw allow http
 ufw allow https
 ufw allow ssh
 ufw --force enable
+
+echo "••• Installing LetsEncrypt certbot for SSL certificate (with automatic renewal)"
+
+# Install Lets Encrypt cert support (https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-10)
+apt-get install -y python3-acme python3-certbot python3-mock python3-openssl python3-pkg-resources python3-pyparsing python3-zope.interface
+apt-get install -y python3-certbot-nginx
+# Then follow instructions here https://certbot.eff.org/lets-encrypt/debianbuster-nginx
+
+echo "••• Installing Blocks and associated files"
 
 # Download and unpack Blocks and its "native" directory
 cd $BLOCKS_HOME
@@ -124,7 +135,7 @@ loginctl enable-linger blocks
 chown -R blocks $BLOCKS_HOME
 chgrp -R blocks $BLOCKS_HOME
 
-# Check you may want to perform at this point to ensure server license can be seen
+echo "••• Checking license server access (examine output, looking for your license key)"
 cmu  --list-network --all-servers
 
 # See installers/add-domain.sh for how to add the actual domain

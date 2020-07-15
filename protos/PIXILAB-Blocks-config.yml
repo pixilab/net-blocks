@@ -5,3 +5,16 @@ root: /home/blocks/PIXILAB-Blocks-root
 # Where to go when accessing server root
 serverRootRedirect: /spot/?mobile=Mob1
 
+# Configure server security.
+# We're using nginx to handle (and enforce) HTTPS, so no need to bother Blocks with that.
+# Specify use of form authentication, allowing for "log-out" functionality.
+server:
+  type: pixilab_server
+  requireHttps: false
+  auth:
+    servlet:
+      security:
+        - matchers: internalMatcher
+          authorizers: isAuthenticated
+          clients: internalForm
+
