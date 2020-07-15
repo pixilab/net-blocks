@@ -1,13 +1,15 @@
 # Scripts to build a Blocks server in the cloud
 
-Developed and tested on digitalocean droplet based on Debian 10
+Developed and tested on digitalocean droplet based on Debian 10. In the instructions below, items within <angle brackets> are placeholders, to be substituted with your own values as appropriate. Items in `monospaced font` are to be entered, one line at a time, at the server's command prompt
 
 ## Instructions
 Create the droplet at digitalocean.com, preferably using a public key for authentication.
 
+Add a DNS entry giving the new server a domain name (possibly using a sub-domain), and make sure it points to the IP address of the droplet. Wait for this name to propagate (you may use nslookup or similar to verify this).
+
 Log in to the droplet using ssh as the root user
 
-`ssh root@_<ip-of-your-droplet>_`
+`ssh root@<ip-of-your-droplet>`
 
 Once logged in, run the following commands
 
@@ -25,7 +27,7 @@ Enter your credentials if requested.
 
 `chmod u+x *.sh`
 
-`./install.sh _license-server-domain-or-ip_`
+`./install.sh <license-server-domain-or-ip>`
 
 Make sure the script makes it all the way to "••• Examine output above, make sure you see your license key's serial number", and do so. If not, examint the output for errors and correct the script as necessary.
 
@@ -41,7 +43,7 @@ Log out of the root account by
 
 Log back in, now as the blocks user
 
-`ssh blocks@_<ip-of-your-droplet>_`
+`ssh blocks@<ip-of-your-droplet>`
 
 OPTIONALLY: For the latest and greatest, update Blocks to the latest beta version
 
