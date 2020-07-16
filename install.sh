@@ -53,11 +53,11 @@ apt-get install -y adoptopenjdk-11-openj9
 
 echo "••• Installing License Key Software"
 # download and install codemeter support from our mirror
-wget -N http://ext.pixilab.se/outgoing/blocks/cloud-support/codemeter.deb
+wget -N http://files.pixilab.se/outgoing/blocks/cloud-support/codemeter.deb
 apt-get install  -y ./codemeter.deb
 rm ./codemeter.deb
 
-wget -N http://ext.pixilab.se/outgoing/blocks/cloud-support/axprotector.deb
+wget -N http://files.pixilab.se/outgoing/blocks/cloud-support/axprotector.deb
 apt-get install  -y ./axprotector.deb
 rm ./axprotector.deb
 
@@ -117,7 +117,7 @@ echo "••• Installing Blocks and associated files"
 
 # Download and unpack Blocks and its "native" directory
 cd $BLOCKS_HOME
-wget https://pixilab.se/outgoing/blocks/PIXILAB_Blocks_Linux.tar.gz
+wget https://files.pixilab.se/outgoing/blocks/PIXILAB_Blocks_Linux.tar.gz
 tar -xzf PIXILAB_Blocks_Linux.tar.gz
 rm PIXILAB_Blocks_Linux.tar.gz
 
