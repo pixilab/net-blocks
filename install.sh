@@ -37,9 +37,10 @@ apt-get install -y gnupg2
 wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
 
 
-# Add jfrog and certbot repositories
+# Add jfrog (OpenJDK) repositories
 apt-get install -y software-properties-common
 add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
+echo "deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb buster main" | sudo tee /etc/apt/sources.list.d/adoptopenjdk.list
 
 # Update with package info from above repos
 apt-get update
@@ -117,7 +118,7 @@ echo "••• Installing Blocks and associated files"
 
 # Download and unpack Blocks and its "native" directory
 cd $BLOCKS_HOME
-wget https://files.pixilab.se/outgoing/blocks/PIXILAB_Blocks_Linux.tar.gz
+wget http://files.pixilab.se/outgoing/blocks/PIXILAB_Blocks_Linux.tar.gz
 tar -xzf PIXILAB_Blocks_Linux.tar.gz
 rm PIXILAB_Blocks_Linux.tar.gz
 
@@ -125,7 +126,7 @@ rm PIXILAB_Blocks_Linux.tar.gz
 usermod --shell /bin/bash blocks
 cp /root/.profile /home/blocks
 
-# See Notes for installing .config/systemd/user files and enabling user systemd over ssh
+# See README for installing .config/systemd/user files and enabling user systemd over ssh
 # Make user "blocks" systemd units start on boot
 loginctl enable-linger blocks
 

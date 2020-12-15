@@ -18,3 +18,17 @@ server:
           authorizers: isAuthenticated
           clients: internalForm
 
+# Log detailed metrics with some reasonable frequency
+#metrics:
+#  frequency: 1 day
+#  reporters:
+#    - type: log
+#      logger: metrics
+
+logging:
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: WARN
+  loggers:        # Logger-specific levels
+    Realm: WARN   # Logging from Tasks regardless of realm
+    Script: WARN  # Logging for scripts/drivers
+    metrics: INFO # To make metrics appear
