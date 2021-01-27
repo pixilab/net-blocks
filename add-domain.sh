@@ -19,11 +19,16 @@ export DOMAIN=$1
 HOME_DIR=/home/blocks
 BLOCKS_ROOT=$HOME_DIR/PIXILAB-Blocks-root
 
+# Allow for proxy running on another machine (later)
+BLOCKS_HOST=localhost
+
 echo "••• Configuring nginx reverse proxy"
 # Configure nginx, after removing default site file
 rm /etc/nginx/sites-enabled/default
 cp -r etc-nginx/* /etc/nginx
-sed -e "s,###DOMAIN###,$DOMAIN,g" <protos/blocks.conf >/etc/nginx/sites-enabled/blocks.conf
+sed -e "s,###DOMAIN###,$DOMAIN,g" \
+   -e "s,###BLOCKS_HOST###,$BLOCKS_HOST,g" \
+<protos/blocks.conf >/etc/nginx/sites-enabled/blocks.conf
 
 echo "••• Configuring Blocks, with its initial admin user"
 cp -R protos/root $BLOCKS_ROOT

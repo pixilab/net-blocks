@@ -1,6 +1,6 @@
 # Scripts to build a Blocks server in the cloud
 
-Developed and tested on digitalocean droplet based on Debian 10. In the instructions below, items within angle brackets are placeholders, to be substituted with your own values as appropriate. Items in `monospaced font` are to be entered, one line at a time, at the server's command prompt
+Developed and tested on digital ocean droplet based on Debian 10. In the instructions below, items within angle brackets are placeholders, to be substituted with your own values as appropriate. Items in `monospaced font` are to be entered, one line at a time, at the server's command prompt
 
 ## Instructions
 Create the droplet at digitalocean.com, preferably using a public key for authentication.
