@@ -31,6 +31,9 @@ echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/s
 echo "••• Adding the blocks user account. You can set a password later using this command:  passwd blocks"
 useradd -m blocks
 
+# Set up locale to stop pearl from bitching about it
+locale-gen en_US.UTF-8
+
 echo "••• Installing Java"
 # Add public keys to approve openjdk for apt
 apt-get install -y gnupg2
@@ -44,6 +47,9 @@ echo "deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb buster main" | sudo tee
 
 # Update with package info from above repos
 apt-get update
+
+# Perform general system software upgrade
+apt-get upgrade -y
 
 # install openj9
 apt-get install -y adoptopenjdk-11-openj9
@@ -122,7 +128,7 @@ wget http://files.pixilab.se/outgoing/blocks/PIXILAB_Blocks_Linux.tar.gz
 tar -xzf PIXILAB_Blocks_Linux.tar.gz
 rm PIXILAB_Blocks_Linux.tar.gz
 
-# COnfigure blocks user to use same shell as root
+# Configure blocks user to use same shell as root
 usermod --shell /bin/bash blocks
 cp /root/.profile /home/blocks
 
