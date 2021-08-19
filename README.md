@@ -27,11 +27,11 @@ Enter your credentials if requested.
 
 `chmod u+x *.sh`
 
-`./install.sh <license-server-domain-or-ip>`
+`sudo ./install.sh <license-server-domain-or-ip>`
 
 Make sure the script makes it all the way to "••• Examine output above, make sure you see your license key's serial number", and do so. If not, examint the output for errors and correct the script as necessary.
 
-`./add-domain.sh _blocks-server-domain-name_`
+`sudo ./add-domain.sh _blocks-server-domain-name_`
 
 Enter your email address and other preferences when prompted by the certbot. Select "2 - Redirect - Make all requests redirect to secure HTTPS access" when prompted.
 
@@ -49,7 +49,7 @@ OPTIONALLY: For the latest and greatest, update Blocks to the latest beta versio
 
 `rm PIXILAN.jar`
 
-`wget http://pixilab.se/outgoing/blocks/4.3b/PIXILAN.jar`
+`wget http://pixilab.se/outgoing/blocks/5.3b/PIXILAN.jar`
 
 IMPORTANT: Substitute the correct URL to the desired Blocks beta version above.
 

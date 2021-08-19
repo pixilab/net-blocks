@@ -19,8 +19,6 @@ fi
 # Pick up FQDN or IP address of license server
 LICENSE_SERVER=$1
 
-# Location of the Blocks user's home dir
-BLOCKS_HOME=/home/blocks
 
 echo "••• Bumping max number of file descriptors to something more useful (for, e.g., websockets)"
 FDS=5000
@@ -30,6 +28,7 @@ echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/s
 
 echo "••• Adding the blocks user account. You can set a password later using this command:  passwd blocks"
 useradd -m blocks
+BLOCKS_HOME=/home/blocks
 
 # Set up locale to stop pearl from bitching about it
 locale-gen en_US.UTF-8
@@ -107,7 +106,7 @@ echo "••• Configuring firewall"
 
 # Install and configure firewall
 # ALTERNATIVELY: Use infrastructure firewall, such as on digitalocean
-apt-get install ufw
+apt-get install -y ufw
 ufw allow OpenSSH
 ufw allow "Nginx HTTP"
 ufw allow "Nginx HTTPS"
@@ -117,7 +116,7 @@ ufw allow ssh
 ufw --force enable
 
 # Install intrusion detection with basic configuration
-apt-get install fail2ban
+apt-get install -y fail2ban
 
 echo "••• Installing LetsEncrypt certbot for SSL certificate (with automatic renewal)"
 
@@ -135,7 +134,7 @@ echo "••• Installing Blocks and associated files"
 
 # Download and unpack Blocks and its "native" directory
 cd $BLOCKS_HOME
-wget http://files.pixilab.se/outgoing/blocks/PIXILAB_Blocks_Linux.tar.gz
+wget http://pixilab.se/outgoing/blocks/PIXILAB_Blocks_Linux.tar.gz
 tar -xzf PIXILAB_Blocks_Linux.tar.gz
 rm PIXILAB_Blocks_Linux.tar.gz
 
