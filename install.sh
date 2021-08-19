@@ -50,11 +50,9 @@ apt-get update
 # Perform general system software upgrade
 apt-get upgrade -y
 
-# install openj9
-apt-get install -y adoptopenjdk-11-openj9
-# or, for traditional hotspot VM
-#	apt-get install  -y adoptopenjdk-11-hotspot
-# to switch java VM
+# Install traditional hotspot VM
+apt-get install  -y adoptopenjdk-11-hotspot
+# to switch java VM, if you have many:
 #	sudo update-alternatives --config java
 
 echo "••• Installing License Key Software"

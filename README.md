@@ -64,3 +64,31 @@ Verify blocks was started OK
 Looking for its status being _Active: active (running)_
 
 Access your newfangled Blocks server using its domain name. Log in as "admin", with the initial password provided by PIXILAB, and change the admin user's password to your liking on the Manage page.
+
+
+## Setting up CodeMeter License server
+
+A license server needs to be enabled on a computer that can be accessed under the name specified as a parameter to the install.sh command. Install the CodeMeter software on that computer as well (see inside the install.sh script for how you may do so on Linux). Make sure the port used for remote CodeMeter access (default is 22350) is open in any firewall.
+
+Stop the CodeMeter service:
+
+`sudo systemctl stop codemeter`
+
+Edit its configuration file:
+
+`sudo nano /etc/wibu/CodeMeter/Server.ini`
+
+Enable the IsNetworkServer option by setting it to 1:
+
+`IsNetworkServer=1` 
+
+Save the file and exit the editor, then start and enable the CodeMeter service:
+
+`sudo systemctl enable --now codemeter`
+
+You can verify access to the CodeMeter service from the outside like this:
+
+`telnet <name-or-ip-of-codemeter-server> 22350`
+
+This should connect without error, indicating that the port can be reached and that CodeMeter is enabled to listen on it.
+
