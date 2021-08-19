@@ -80,17 +80,19 @@ systemctl disable codemeter-webadmin.service
 
 echo "••• Installing some useful command line utilities"
 
-# Command line utility to show disk performance
-apt-get install -y iotop
 
-# Command line utility to show network performance
-apt-get install -y iftop
-
-#Install general purpose network traffic status monitor
-apt-get install -y vnstat
-
-# Some additional, useful monitoring programs
+# Some additional, useful monitoring and maintenance programs
 apt-get install -y htop
+# Efficient remote and local file synchronization
+apt-get install -y rsync
+# Network traffic status monitor
+apt-get install -y vnstat
+# Network performance
+apt-get install -y iftop
+# Disk performance
+apt-get install -y iotop
+# Zip and unzip functionality
+apt-get install -y zip
 
 # Install nginx to use as reverse proxy and for serving static files
 apt-get install -y nginx
@@ -104,6 +106,7 @@ apt-get install -y nginx
 echo "••• Configuring firewall"
 
 # Install and configure firewall
+# ALTERNATIVELY: Use infrastructure firewall, such as on digitalocean
 apt-get install ufw
 ufw allow OpenSSH
 ufw allow "Nginx HTTP"
@@ -113,12 +116,20 @@ ufw allow https
 ufw allow ssh
 ufw --force enable
 
+# Install intrusion detection with basic configuration
+apt-get install fail2ban
+
 echo "••• Installing LetsEncrypt certbot for SSL certificate (with automatic renewal)"
 
 # Install Lets Encrypt cert support (https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-10)
 apt-get install -y python3-acme python3-certbot python3-mock python3-openssl python3-pkg-resources python3-pyparsing python3-zope.interface
 apt-get install -y python3-certbot-nginx
 # Then follow instructions here https://certbot.eff.org/lets-encrypt/debianbuster-nginx
+
+# Tell nginx to reload its config when cert is updated
+echo '' >> /etc/letsencrypt/cli.ini
+echo '# Reload nginx config when cert is updated' >> /etc/letsencrypt/cli.ini
+echo 'deploy-hook = systemctl reload nginx' >> /etc/letsencrypt/cli.ini
 
 echo "••• Installing Blocks and associated files"
 
@@ -132,6 +143,11 @@ rm PIXILAB_Blocks_Linux.tar.gz
 usermod --shell /bin/bash blocks
 cp /root/.profile /home/blocks
 
+# Copy root's authorized_keys to the 'blocks' user, to provide access using same method
+# This assumes ssh keys have been set up for root (done by default at digitalocean)
+mkdir -p /home/blocks/.ssh/
+cp /root/.ssh/authorized_keys /home/blocks/.ssh/authorized_keys
+
 # See README for installing .config/systemd/user files and enabling user systemd over ssh
 # Make user "blocks" systemd units start on boot
 loginctl enable-linger blocks
@@ -139,9 +155,16 @@ loginctl enable-linger blocks
 chown -R blocks $BLOCKS_HOME
 chgrp -R blocks $BLOCKS_HOME
 
+# Set the desired local time zone for the server
+timedatectl set-timezone Europe/Stockholm
+
 echo "••• Checking license server access"
 cmu  --list-network --all-servers
 echo "••• Examine output above, make sure you see your license key's serial number"
+
+# Verify the following setting is in your /etc/ssh/sshd_config
+#   PasswordAuthentication no
+# Some VPS providers (such as digitalocean) adds this by default, others may not
 
 # See installers/add-domain.sh for how to add the actual domain
 

@@ -4,7 +4,7 @@ Description=CodeMeter command attempting to make sure its service is up
 [Service]
 Type=oneshot
 # Attempt to find license server on network repeatedly until it succeeds
-ExecStart=/bin/sh -c 'while ! cmu --list-network --all-servers --firmcode=102977; do sleep 1; done'
+ExecStart=/bin/sh -c 'while ! cmu --list-network --all-servers --firmcode=102977; do /bin/sleep 1; done'
 TimeoutStartSec=30s
 
 # Give a few more seconds to ensure fully awake

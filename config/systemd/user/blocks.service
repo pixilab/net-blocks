@@ -12,11 +12,11 @@ EnvironmentFile=%h/.config/systemd/user/blocks.service.config
 
 StandardOutput=null
 WorkingDirectory=%h
-KillSignal=SIGINT
 TimeoutStopSec=20
 Restart=on-failure
 RestartSec=5
 LimitNOFILE=5000
+SuccessExitStatus=143
 
 ExecStart=/usr/bin/java \
         -Djava.library.path=%h/native:/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib \
