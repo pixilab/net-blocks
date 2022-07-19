@@ -22,8 +22,8 @@ LICENSE_SERVER=$1
 
 echo "••• Bumping max number of file descriptors to something more useful (for, e.g., websockets)"
 FDS=5000
-echo -e "DefaultLimitNOFILE=$FDS\n" >> /etc/systemd/user.conf
-echo -e "DefaultLimitNOFILE=$FDS\n" >> /etc/systemd/system.conf
+echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/user.conf
+echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/system.conf
 echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/security/limits.conf
 
 echo "••• Adding the blocks user account. You can set a password later using this command:  passwd blocks"
@@ -34,15 +34,10 @@ BLOCKS_HOME=/home/blocks
 locale-gen en_US.UTF-8
 
 echo "••• Installing Java"
-# Add public keys to approve openjdk for apt
-apt-get install -y gnupg2
-wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add -
-
-
-# Add jfrog (OpenJDK) repositories
-apt-get install -y software-properties-common
-add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/
-echo "deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb buster main" | sudo tee /etc/apt/sources.list.d/adoptopenjdk.list
+apt-get update
+apt-get install -y wget apt-transport-https
+wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /usr/share/keyrings/adoptium.asc
+echo "deb [signed-by=/usr/share/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
 
 # Update with package info from above repos
 apt-get update
@@ -50,18 +45,19 @@ apt-get update
 # Perform general system software upgrade
 apt-get upgrade -y
 
-# Install traditional hotspot VM
-apt-get install  -y adoptopenjdk-11-hotspot
-# to switch java VM, if you have many:
+# Install Java VM
+apt-get install -y temurin-11-jdk
+
+# to switch java VM, if you have many, run this later:
 #	sudo update-alternatives --config java
 
 echo "••• Installing License Key Software"
 # download and install codemeter support from our mirror
-wget -N http://files.pixilab.se/outgoing/blocks/cloud-support/codemeter.deb
+wget https://pixilab.se/outgoing/blocks/cloud-support/codemeter.deb
 apt-get install  -y ./codemeter.deb
 rm ./codemeter.deb
 
-wget -N http://files.pixilab.se/outgoing/blocks/cloud-support/axprotector.deb
+wget https://pixilab.se/outgoing/blocks/cloud-support/axprotector.deb
 apt-get install  -y ./axprotector.deb
 rm ./axprotector.deb
 

@@ -1,4 +1,4 @@
-# Minimal Blocks root configuration file
+# PIXILAB Blocks configuration. Changes require server restart to apply.
 
 root: /home/blocks/PIXILAB-Blocks-root
 
@@ -16,7 +16,7 @@ server:
       security:
         - matchers: internalMatcher
           authorizers: isAuthenticated
-          clients: internalForm
+          clients: internalForm  # internalDigest internalForm OidcClient
 
 # Log detailed metrics with some reasonable frequency
 #metrics:
