@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Setup script for running Blocks behind nginx reverse proxy on a bare-bones Debian 10.
+# Setup script for running Blocks behind nginx reverse proxy on a bare-bones Debian 10/11.
 # Script is assumed to run as root
 
 # https://stackoverflow.com/questions/821396/aborting-a-shell-script-if-any-command-returns-a-non-zero-value
@@ -51,6 +51,14 @@ apt-get install -y temurin-11-jdk
 # to switch java VM, if you have many, run this later:
 #	sudo update-alternatives --config java
 
+echo "••• Installing Chromium (used headless as web renderer by Blocks)"
+# Older non-snap Chromium, not being updated (Debian 10 only)
+# apt-get install -y chromium
+# So use snap-packaged Chromium instead (only option for Debian 11+)
+apt install snapd
+snap install core
+snap install chromium
+
 echo "••• Installing License Key Software"
 # download and install codemeter support from our mirror
 wget https://pixilab.se/outgoing/blocks/cloud-support/codemeter.deb
@@ -61,8 +69,6 @@ wget https://pixilab.se/outgoing/blocks/cloud-support/axprotector.deb
 apt-get install  -y ./axprotector.deb
 rm ./axprotector.deb
 
-echo "••• Installing Chromium (used headless as web renderer by Blocks)"
-apt-get install -y chromium
 
 # Add external license server to search list
 cmu --clear-serversearchlist
@@ -92,6 +98,9 @@ apt-get install -y nginx
 
 # Copy configuration file (e.g. Notes/nginx.txt) to /etc/nginx/sites-available
 # symlink from /etc/nginx/sites-enabled
+
+# Install our custom nginx error page
+cp misc/error50x.html /usr/share/nginx/html/
 
 # Reload nginx config by
 #	nginx -s reload
@@ -128,7 +137,7 @@ echo "••• Installing Blocks and associated files"
 
 # Download and unpack Blocks and its "native" directory
 cd $BLOCKS_HOME
-wget http://pixilab.se/outgoing/blocks/PIXILAB_Blocks_Linux.tar.gz
+wget https://pixilab.se/outgoing/blocks/PIXILAB_Blocks_Linux.tar.gz
 tar -xzf PIXILAB_Blocks_Linux.tar.gz
 rm PIXILAB_Blocks_Linux.tar.gz
 
@@ -145,8 +154,10 @@ cp /root/.ssh/authorized_keys /home/blocks/.ssh/authorized_keys
 # Make user "blocks" systemd units start on boot
 loginctl enable-linger blocks
 
+# Make everything in $BLOCKS_HOME belong to the blocks user
 chown -R blocks $BLOCKS_HOME
 chgrp -R blocks $BLOCKS_HOME
+
 
 # Set the desired local time zone for the server
 timedatectl set-timezone Europe/Stockholm
@@ -159,5 +170,5 @@ echo "••• Examine output above, make sure you see your license key's seria
 #   PasswordAuthentication no
 # Some VPS providers (such as digitalocean) adds this by default, others may not
 
-# See installers/add-domain.sh for how to add the actual domain
+# See script add-domain.sh for how to add the actual domain
 
