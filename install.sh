@@ -163,8 +163,9 @@ chgrp -R blocks $BLOCKS_HOME
 timedatectl set-timezone Europe/Stockholm
 
 echo "••• Checking license server access"
-cmu  --list-network --all-servers
-echo "••• Examine output above, make sure you see your license key's serial number"
+cmu  --list
+echo "••• Examine output above, making sure you see your license number. If not shown, please"
+echo "    contact PIXILAB for further instrutions on how to obtain and install your license."
 
 # Verify the following setting is in your /etc/ssh/sshd_config
 #   PasswordAuthentication no
