@@ -11,13 +11,13 @@ if [ $# -lt 1 ]
 then
    echo "Perform initial installation and server configuration";
    echo
-   echo "Usage: $0 <license-server>"
-   echo
    exit 1 # Exit script after printing help
 fi
 
-# Pick up FQDN or IP address of license server
-LICENSE_SERVER=$1
+# Pick up FQDN or IP address of license server.
+# DEPRECATED since this applied only when using remote physical dongle.
+# Not needed when using cloud-based license.
+# LICENSE_SERVER=$1
 
 
 echo "••• Bumping max number of file descriptors to something more useful (for, e.g., websockets)"
@@ -70,9 +70,9 @@ apt-get install  -y ./axprotector.deb
 rm ./axprotector.deb
 
 
-# Add external license server to search list
-cmu --clear-serversearchlist
-cmu --add-server $LICENSE_SERVER
+# Add external license server to search list (applies only when using remote physical dongle)
+# cmu --clear-serversearchlist
+# cmu --add-server $LICENSE_SERVER
 
 # Disable codemeter's webadmin, which isn't needed on the server
 systemctl disable codemeter-webadmin.service
