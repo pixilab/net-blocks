@@ -79,7 +79,6 @@ systemctl disable codemeter-webadmin.service
 
 echo "••• Installing some useful command line utilities"
 
-
 # Some additional, useful monitoring and maintenance programs
 apt-get install -y htop
 # Efficient remote and local file synchronization
