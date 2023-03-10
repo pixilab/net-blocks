@@ -6,20 +6,6 @@
 # https://stackoverflow.com/questions/821396/aborting-a-shell-script-if-any-command-returns-a-non-zero-value
 set -eu
 
-# Show help in case required parameters are empty
-if [ $# -lt 1 ]
-then
-   echo "Perform initial installation and server configuration";
-   echo
-   exit 1 # Exit script after printing help
-fi
-
-# Pick up FQDN or IP address of license server.
-# DEPRECATED since this applied only when using remote physical dongle.
-# Not needed when using cloud-based license.
-# LICENSE_SERVER=$1
-
-
 echo "••• Bumping max number of file descriptors to something more useful (for, e.g., websockets)"
 FDS=5000
 echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/user.conf
