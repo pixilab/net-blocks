@@ -1,4 +1,8 @@
-# Scripts to build a Blocks server in the cloud
+# IMPORTANT
+
+This is an UNSUPPORTED example. While we attempt to keep this up to date and working as described for the desired target audience and platform, this is NOT a PIXILAB product. If you need help setting up Blocks in the cloud or on some other server, we may be able to assist you for a fee. Contact info@pixilab.se for further assistance.
+
+## Scripts to build a Blocks server in the cloud
 
 Developed and tested on digital ocean droplet based on Debian 10. In the instructions below, items within angle brackets are placeholders, to be substituted with your own values as appropriate. Items in `monospaced font` are to be entered, one line at a time, at the server's command prompt
 
@@ -80,7 +84,7 @@ Edit its configuration file:
 
 Enable the IsNetworkServer option by setting it to 1:
 
-`IsNetworkServer=1` 
+`IsNetworkServer=1`
 
 Save the file and exit the editor, then start and enable the CodeMeter service:
 
