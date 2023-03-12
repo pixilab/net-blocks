@@ -147,10 +147,12 @@ chgrp -R blocks $BLOCKS_HOME
 # Set the desired local time zone for the server
 timedatectl set-timezone Europe/Stockholm
 
-echo "••• Checking license server access"
 cmu  --list
-echo "••• Examine output above, making sure you see your license number. If not shown, please"
-echo "    contact PIXILAB for further instrutions on how to obtain and install your license."
+echo "••• DONE!"
+echo "••• Examine output above. If you don't see your license number, please contact"
+echo "    PIXILAB for further instrutions on how to obtain and install your license."
+echo "    A license file, once obtained, can be imported using this command:"
+echo "        cmu --import --file <filename>"
 
 # Verify the following setting is in your /etc/ssh/sshd_config
 #   PasswordAuthentication no
