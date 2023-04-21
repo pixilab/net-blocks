@@ -90,33 +90,21 @@ cp misc/error50x.html /usr/share/nginx/html/
 # Reload nginx config by
 #	nginx -s reload
 
-echo "••• Configuring firewall"
+echo "••• Configuring firewall for http and ssh access"
 
 # Install and configure firewall
 # ALTERNATIVELY: Use infrastructure firewall, such as on digitalocean
 apt-get install -y ufw
 ufw allow OpenSSH
 ufw allow "Nginx HTTP"
-ufw allow "Nginx HTTPS"
 ufw allow http
-ufw allow https
 ufw allow ssh
 ufw --force enable
 
-# Install intrusion detection with basic configuration
-apt-get install -y fail2ban
+# Optionally install intrusion detection with basic configuration
+# apt-get install -y fail2ban
 
-echo "••• Installing LetsEncrypt certbot for SSL certificate (with automatic renewal)"
 
-# Install Lets Encrypt cert support (https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-10)
-apt-get install -y python3-acme python3-certbot python3-mock python3-openssl python3-pkg-resources python3-pyparsing python3-zope.interface
-apt-get install -y python3-certbot-nginx
-# Then follow instructions here https://certbot.eff.org/lets-encrypt/debianbuster-nginx
-
-# Tell nginx to reload its config when cert is updated
-echo '' >> /etc/letsencrypt/cli.ini
-echo '# Reload nginx config when cert is updated' >> /etc/letsencrypt/cli.ini
-echo 'deploy-hook = systemctl reload nginx' >> /etc/letsencrypt/cli.ini
 
 echo "••• Installing Blocks and associated files"
 
@@ -143,6 +131,9 @@ loginctl enable-linger blocks
 chown -R blocks $BLOCKS_HOME
 chgrp -R blocks $BLOCKS_HOME
 
+# Add Blocks user's systemd unit and config files
+mkdir -p $BLOCKS_HOME/.config
+cp -R config/* $BLOCKS_HOME/.config/
 
 # Set the desired local time zone for the server
 timedatectl set-timezone Europe/Stockholm

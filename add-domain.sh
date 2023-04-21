@@ -16,13 +16,34 @@ fi
 
 # Define variables from command line parameters, and some others
 export DOMAIN=$1
-HOME_DIR=/home/blocks
-BLOCKS_ROOT=$HOME_DIR/PIXILAB-Blocks-root
+BLOCKS_HOME=/home/blocks
+BLOCKS_ROOT=$BLOCKS_HOME/PIXILAB-Blocks-root
 
 # Allow for proxy running on another machine (later)
 BLOCKS_HOST=localhost
 
+echo "••• Configuring firewall for https access"
+
+# Install and configure firewall
+# ALTERNATIVELY: Use infrastructure firewall, such as on digitalocean
+ufw allow "Nginx HTTPS"
+ufw allow https
+ufw --force enable
+
+
+echo "••• Installing LetsEncrypt certbot for SSL certificate (with automatic renewal)"
+
+# Install Lets Encrypt cert support (https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-10)
+apt-get install -y python3-acme python3-certbot python3-mock python3-openssl python3-pkg-resources python3-pyparsing python3-zope.interface
+apt-get install -y python3-certbot-nginx
+# Then follow instructions here https://certbot.eff.org/lets-encrypt/debianbuster-nginx
+
+# Tell nginx to reload its config when cert is updated
+echo '' >> /etc/letsencrypt/cli.ini
+echo '# Reload nginx config when cert is updated' >> /etc/letsencrypt/cli.ini
+echo 'deploy-hook = systemctl reload nginx' >> /etc/letsencrypt/cli.ini
 echo "••• Configuring nginx reverse proxy"
+
 # Configure nginx, after removing default site file
 rm /etc/nginx/sites-enabled/default
 cp -r etc-nginx/* /etc/nginx
@@ -34,11 +55,9 @@ echo "••• Configuring Blocks, with its initial admin user"
 cp -R protos/root $BLOCKS_ROOT
 
 # Add Blocks' config file
-cp protos/PIXILAB-Blocks-config.yml $HOME_DIR/PIXILAB-Blocks-config.yml
+cp protos/PIXILAB-Blocks-config.yml $BLOCKS_HOME/PIXILAB-Blocks-config.yml
 
-# Add Blocks user's systemd unit and config files
-mkdir -p $HOME_DIR/.config
-cp -R config/* $HOME_DIR/.config/
+
 
 # Copy root's authorized_keys to the 'blocks' user, to provide access using same method
 mkdir -p /home/blocks/.ssh/
@@ -49,7 +68,7 @@ nginx -t
 nginx -s reload
 
 # Make all that owned by blocks
-chown blocks -R $HOME_DIR
+chown blocks -R $BLOCKS_HOME
 
 # Enable certbot for the domain
 echo
