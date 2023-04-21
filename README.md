@@ -43,7 +43,11 @@ If the output shown at the end of the script run does not include your Blocks li
 
 Verify that the license is imported OK using the command `cmu --list`, which should now show your license number.
 
-Next, set up the domain name to be used, along with a SSL certificate (HTTPS) for your domain. This assumes that a DNS entry has been established, as mentioned above, pointing your domain name to your newly created server.
+Set a password for the `blocks` user using the command:
+`passwd blocks`
+
+## Optional set up domain name
+Set up the domain name to be used, along with a SSL certificate (HTTPS) for your domain. This assumes that a DNS entry has been established, as mentioned above, pointing your domain name to your newly created server.
 
 `sudo ./add-domain.sh _blocks-server-domain-name_`
 
