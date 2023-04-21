@@ -6,6 +6,13 @@
 # https://stackoverflow.com/questions/821396/aborting-a-shell-script-if-any-command-returns-a-non-zero-value
 set -eu
 
+#Store the scripts base directory 
+if [ -L $0 ] ; then
+    BASEDIR=$(cd "$(dirname "$(readlink $0)")"; pwd -P) # for symbolic link
+else
+    BASEDIR=$(cd "$(dirname "$0")"; pwd -P) # for normal file
+fi
+
 echo "••• Bumping max number of file descriptors to something more useful (for, e.g., websockets)"
 FDS=5000
 echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/user.conf
@@ -14,14 +21,12 @@ echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/s
 
 echo "••• Adding the blocks user account. You can set a password later using this command:  passwd blocks"
 # Check if user blocks already exists
-exists=$(grep -c "blocks" /etc/passwd)
-if [ $exists -eq 0 ]; then
-    echo "Adding blocks user"
-        useradd -m blocks
+if grep -q "blocks" /etc/passwd; then
+  echo  "Blocks user already exists"
 else
-    echo "The blocks user already exists"
+  echo "Adding blocks user"
+  useradd -m blocks
 fi
-BLOCKS_HOME=/home/blocks
 # Set up locale to stop pearl from bitching about it
 if ! command -v locale-gen &> /dev/null
 then
@@ -32,6 +37,10 @@ locale-gen en_US.UTF-8
 
 # specify the block user home dir
 BLOCKS_HOME=/home/blocks
+
+# Add Blocks user's systemd unit and config files
+mkdir -p $BLOCKS_HOME/.config
+cp -R $BASEDIR/config/* $BLOCKS_HOME/.config/
 
 echo "••• Installing Java"
 apt-get update
@@ -99,7 +108,7 @@ apt-get install -y nginx
 # symlink from /etc/nginx/sites-enabled
 
 # Install our custom nginx error page
-cp misc/error50x.html /usr/share/nginx/html/
+cp $BASEDIR/misc/error50x.html /usr/share/nginx/html/
 
 # Reload nginx config by
 #	nginx -s reload
@@ -130,24 +139,22 @@ rm PIXILAB_Blocks_Linux.tar.gz
 
 # Configure blocks user to use same shell as root
 usermod --shell /bin/bash blocks
-cp /root/.profile /home/blocks
+cp /root/.profile $BLOCKS_HOME
 
 # Copy root's authorized_keys to the 'blocks' user, to provide access using same method
 # This assumes ssh keys have been set up for root (done by default at digitalocean)
-mkdir -p /home/blocks/.ssh/
-cp /root/.ssh/authorized_keys /home/blocks/.ssh/authorized_keys
+mkdir -p $BLOCKS_HOME/.ssh/
+cp /root/.ssh/authorized_keys $BLOCKS_HOME/.ssh/authorized_keys
 
 # See README for installing .config/systemd/user files and enabling user systemd over ssh
 # Make user "blocks" systemd units start on boot
 loginctl enable-linger blocks
 
+
 # Make everything in $BLOCKS_HOME belong to the blocks user
 chown -R blocks $BLOCKS_HOME
 chgrp -R blocks $BLOCKS_HOME
 
-# Add Blocks user's systemd unit and config files
-mkdir -p $BLOCKS_HOME/.config
-cp -R config/* $BLOCKS_HOME/.config/
 
 # Set the desired local time zone for the server
 timedatectl set-timezone Europe/Stockholm
@@ -158,7 +165,7 @@ echo "••• Examine output above. If you don't see your license number, plea
 echo "    PIXILAB for further instrutions on how to obtain and install your license."
 echo "    A license file, once obtained, can be imported using this command:"
 echo "        cmu --import --file <filename>"
-echo "    Please set a secure password for blocks user using this command:  passwd blocks
+echo "    Please set a secure password for blocks user using this command:  passwd blocks"
 
 # Verify the following setting is in your /etc/ssh/sshd_config
 #   PasswordAuthentication no
