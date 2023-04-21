@@ -13,11 +13,25 @@ echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/system.conf
 echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/security/limits.conf
 
 echo "••• Adding the blocks user account. You can set a password later using this command:  passwd blocks"
-useradd -m blocks
+# Check if user blocks already exists
+exists=$(grep -c "blocks" /etc/passwd)
+if [ $exists -eq 0 ]; then
+    echo "Adding blocks user"
+        useradd -m blocks
+else
+    echo "The blocks user already exists"
+fi
 BLOCKS_HOME=/home/blocks
-
 # Set up locale to stop pearl from bitching about it
+if ! command -v locale-gen &> /dev/null
+then
+        echo "installing locale-gen"
+        apt install -y locales
+fi
 locale-gen en_US.UTF-8
+
+# specify the block user home dir
+BLOCKS_HOME=/home/blocks
 
 echo "••• Installing Java"
 apt-get update
@@ -144,6 +158,7 @@ echo "••• Examine output above. If you don't see your license number, plea
 echo "    PIXILAB for further instrutions on how to obtain and install your license."
 echo "    A license file, once obtained, can be imported using this command:"
 echo "        cmu --import --file <filename>"
+echo "    Please set a secure password for blocks user using this command:  passwd blocks
 
 # Verify the following setting is in your /etc/ssh/sshd_config
 #   PasswordAuthentication no
