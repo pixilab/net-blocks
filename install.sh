@@ -101,33 +101,18 @@ apt-get install -y iotop
 # Zip and unzip functionality
 apt-get install -y zip
 
-# Install nginx to use as reverse proxy and for serving static files
-apt-get install -y nginx
-
-# Copy configuration file (e.g. Notes/nginx.txt) to /etc/nginx/sites-available
-# symlink from /etc/nginx/sites-enabled
-
-# Install our custom nginx error page
-cp $BASEDIR/misc/error50x.html /usr/share/nginx/html/
-
-# Reload nginx config by
-#	nginx -s reload
-
 echo "••• Configuring firewall for http and ssh access"
 
 # Install and configure firewall
 # ALTERNATIVELY: Use infrastructure firewall, such as on digitalocean
 apt-get install -y ufw
 ufw allow OpenSSH
-ufw allow "Nginx HTTP"
 ufw allow http
 ufw allow ssh
 ufw --force enable
 
 # Optionally install intrusion detection with basic configuration
 # apt-get install -y fail2ban
-
-
 
 echo "••• Installing Blocks and associated files"
 
