@@ -28,11 +28,9 @@ else
   useradd -m blocks
 fi
 # Set up locale to stop pearl from bitching about it
-if ! command -v locale-gen &> /dev/null
-then
-        echo "installing locale-gen"
-        apt install -y locales
-fi
+
+echo "installing locale-gen"
+apt install -y locales
 locale-gen en_US.UTF-8
 
 # specify the block user home dir
