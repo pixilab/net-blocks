@@ -80,7 +80,9 @@ Looking for its status being _Active: active (running)_
 
 ### Firewall
 Depending on the setup the firewall may need further configuration.  I.e if we want to access Blocks from some existing load balancer or reverse proxy ww must allow access to Blocks on port 8080. 
-Exampele command:
+
+Example command:
+
 sudo ufw allow from <ip_of_reverse_proxy> proto tcp to any port 8080
 
 
