@@ -20,6 +20,7 @@ echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/system.conf
 echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/security/limits.conf
 
 echo "••• Adding the blocks user account. You can set a password later using this command:  passwd blocks"
+
 # Check if user blocks already exists
 if grep -q "blocks" /etc/passwd; then
   echo  "Blocks user already exists"
@@ -27,6 +28,7 @@ else
   echo "Adding blocks user"
   useradd -m blocks
 fi
+
 # Set up locale to stop pearl from bitching about it
 if ! command -v locale-gen &> /dev/null
 then
