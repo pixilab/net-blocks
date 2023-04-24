@@ -77,12 +77,13 @@ Verify blocks was started OK
 `systemctl --user status blocks`
 
 Looking for its status being _Active: active (running)_
+
 ###Firewall
 Depending on the setup the firewall may need further configuration.  I.e if we want to access Blocks from some existing load balancer or reverse proxy ww must allow access to Blocks on port 8080. 
 Exampele command:
 sudo ufw allow from <ip_of_reverse_proxy> proto tcp to any port 8080
 
-###
+
 Finally, log into your new Blocks server using its domain name. User name "admin", with the initial password to be provided by PIXILAB on request, and then change the admin user's password to your liking on the Manage page.
 
 Some further details related to using nginx as a reverse proxy for Blocks can be found here:
