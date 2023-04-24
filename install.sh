@@ -163,9 +163,11 @@ cmu  --list
 echo "••• DONE!"
 echo "••• Examine output above. If you don't see your license number, please contact"
 echo "    PIXILAB for further instrutions on how to obtain and install your license."
+echo "    Please set a secure password for blocks user using this command:"
+echo "        passwd blocks"
 echo "    A license file, once obtained, can be imported using this command:"
 echo "        cmu --import --file <filename>"
-echo "    Please set a secure password for blocks user using this command:  passwd blocks"
+
 
 # Verify the following setting is in your /etc/ssh/sshd_config
 #   PasswordAuthentication no
