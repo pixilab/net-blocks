@@ -46,8 +46,10 @@ Verify that the license is imported OK using the command `cmu --list`, which sho
 Set a password for the `blocks` user using the command:
 `passwd blocks`
 
-## Optional set up domain name
+
+# Optional set up domain name
 Set up the domain name to be used, along with a SSL certificate (HTTPS) for your domain. This assumes that a DNS entry has been established, as mentioned above, pointing your domain name to your newly created server.
+
 
 `sudo ./add-domain.sh _blocks-server-domain-name_`
 
@@ -58,6 +60,9 @@ Make sure the script makes it all the way to "••• Domain added."
 Log out of the root account by
 
 `exit`
+
+
+# Start the server now and on boot
 
 Log back in, now as the blocks user
 
