@@ -11,7 +11,10 @@ set -eu
 
 BLOCKS_HOME=/home/blocks
 BLOCKS_ROOT=$BLOCKS_HOME/PIXILAB-Blocks-root
+#Set a dummmy name
 DOMAIN="NoDomain"
+# Allow for proxy running on another machine (later)
+BLOCKS_HOST=localhost
 
 #Store the scripts base directory 
 if [ -L $0 ] ; then
@@ -20,8 +23,7 @@ else
     BASEDIR=$(cd "$(dirname "$0")"; pwd -P) # for normal file
 fi
 
-# Allow for proxy running on another machine (later)
-BLOCKS_HOST=localhost
+
 
 
 echo "••• Install NGINX"
@@ -48,17 +50,14 @@ ufw --force enable
 
 echo "••• Configuring nginx reverse proxy"
 
-
-echo "••• Configure NGINX"
 # Configure nginx, after removing default site file
-if [ -d "/etc/nginx/sites-enabled/default" ]
-then
-       rm /etc/nginx/sites-enabled/default
+if [ -d "/etc/nginx/sites-enabled/default" ]; then
+       rm -f /etc/nginx/sites-enabled/default
 fi
 
 cp -r etc-nginx/* /etc/nginx
-# Delete the https config for now
-rm /etc/nginx/pixilab_https.conf
+# Delete the https config since we are still http only
+rm -f /etc/nginx/conf.d/pixilab_https.conf
 sed -e "s,###DOMAIN###,$DOMAIN,g" \
    -e "s,###BLOCKS_HOST###,$BLOCKS_HOST,g" \
 <protos/blocks.conf >/etc/nginx/sites-enabled/blocks.conf
@@ -75,5 +74,6 @@ cp protos/PIXILAB-Blocks-config.yml $BLOCKS_HOME/PIXILAB-Blocks-config.yml
 # Make all that owned by blocks
 chown blocks -R $BLOCKS_HOME
 
-echo "Finished. NGINX is now running as reverse proxy in front of blocks. Access blocks with http on the server ip-address."
+echo "Finished."
+echo "NGINX is now running as reverse proxy in front of blocks. Access blocks with http on the server ip-address."
 echo "If you intend to use your a domain name to access Blocks run the add-domain.sh script after reading that section of the readme documentation "
