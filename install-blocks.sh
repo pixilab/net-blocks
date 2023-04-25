@@ -161,5 +161,5 @@ echo "    Access blocks with http on the server ip-address port 8080. i.e http:/
 #   PasswordAuthentication no
 # Some VPS providers (such as digitalocean) adds this by default, others may not
 
-# See script add-domain.sh for how to add the actual domain
+
 
