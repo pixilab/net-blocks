@@ -111,6 +111,7 @@ apt-get install -y ufw
 ufw allow OpenSSH
 ufw allow http
 ufw allow ssh
+ufw allow 8080/tcp
 ufw --force enable
 
 # Optionally install intrusion detection with basic configuration
@@ -154,7 +155,7 @@ echo "    Please set a secure password for blocks user using this command:"
 echo "        passwd blocks"
 echo "    A license file, once obtained, can be imported using this command:"
 echo "        cmu --import --file <filename>"
-
+echo "    Access blocks with http on the server ip-address port 8080. i.e http://10.2.0.10:8080/edit"
 
 # Verify the following setting is in your /etc/ssh/sshd_config
 #   PasswordAuthentication no

@@ -22,14 +22,11 @@ BLOCKS_ROOT=$BLOCKS_HOME/PIXILAB-Blocks-root
 # Allow for proxy running on another machine (later)
 BLOCKS_HOST=localhost
 
-# Install nginx to use as reverse proxy and for serving static files
-apt-get install -y nginx
+
 
 # Copy configuration file (e.g. Notes/nginx.txt) to /etc/nginx/sites-available
 # symlink from /etc/nginx/sites-enabled
 
-# Install our custom nginx error page
-cp $BASEDIR/misc/error50x.html /usr/share/nginx/html/
 
 # Reload nginx config by
 #	nginx -s reload
@@ -38,7 +35,7 @@ echo "••• Configuring firewall for https access"
 
 # Install and configure firewall
 # ALTERNATIVELY: Use infrastructure firewall, such as on digitalocean
-ufw allow "Nginx HTTP"
+
 ufw allow "Nginx HTTPS"
 ufw allow https
 ufw --force enable
@@ -55,21 +52,6 @@ apt-get install -y python3-certbot-nginx
 echo '' >> /etc/letsencrypt/cli.ini
 echo '# Reload nginx config when cert is updated' >> /etc/letsencrypt/cli.ini
 echo 'deploy-hook = systemctl reload nginx' >> /etc/letsencrypt/cli.ini
-echo "••• Configuring nginx reverse proxy"
-
-# Configure nginx, after removing default site file
-rm /etc/nginx/sites-enabled/default
-cp -r etc-nginx/* /etc/nginx
-sed -e "s,###DOMAIN###,$DOMAIN,g" \
-   -e "s,###BLOCKS_HOST###,$BLOCKS_HOST,g" \
-<protos/blocks.conf >/etc/nginx/sites-enabled/blocks.conf
-
-echo "••• Configuring Blocks, with its initial admin user"
-cp -R protos/root $BLOCKS_ROOT
-
-# Add Blocks' config file
-cp protos/PIXILAB-Blocks-config.yml $BLOCKS_HOME/PIXILAB-Blocks-config.yml
-
 
 
 # Copy root's authorized_keys to the 'blocks' user, to provide access using same method
