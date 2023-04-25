@@ -8,9 +8,10 @@ set -eu
 
 
 # Define variables from command line parameters, and some others
-export DOMAIN=$1
+
 BLOCKS_HOME=/home/blocks
 BLOCKS_ROOT=$BLOCKS_HOME/PIXILAB-Blocks-root
+DOMAIN="NoDomain"
 
 #Store the scripts base directory 
 if [ -L $0 ] ; then
@@ -42,7 +43,7 @@ echo "••• Configuring firewall for http access"
 # ALTERNATIVELY: Use infrastructure firewall, such as on digitalocean
 ufw delete allow 8080/tcp #No need for external access to Blocks with NGINX as reverse proxy
 ufw allow "Nginx HTTP"
-ufw allow https
+ufw allow http
 ufw --force enable
 
 echo "••• Configuring nginx reverse proxy"
@@ -50,8 +51,14 @@ echo "••• Configuring nginx reverse proxy"
 
 echo "••• Configure NGINX"
 # Configure nginx, after removing default site file
-rm /etc/nginx/sites-enabled/default
+if [ -d "/etc/nginx/sites-enabled/default" ]
+then
+       rm /etc/nginx/sites-enabled/default
+fi
+
 cp -r etc-nginx/* /etc/nginx
+# Delete the https config for now
+rm /etc/nginx/pixilab_https.conf
 sed -e "s,###DOMAIN###,$DOMAIN,g" \
    -e "s,###BLOCKS_HOST###,$BLOCKS_HOST,g" \
 <protos/blocks.conf >/etc/nginx/sites-enabled/blocks.conf

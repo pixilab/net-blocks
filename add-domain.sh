@@ -54,13 +54,25 @@ echo '# Reload nginx config when cert is updated' >> /etc/letsencrypt/cli.ini
 echo 'deploy-hook = systemctl reload nginx' >> /etc/letsencrypt/cli.ini
 
 
-# Copy root's authorized_keys to the 'blocks' user, to provide access using same method
-mkdir -p /home/blocks/.ssh/
-cp /root/.ssh/authorized_keys /home/blocks/.ssh/authorized_keys
+echo "••• Re-configure NGINX"
+# Re-onfigure nginx, after removing default site file
+
+if [ -d "/etc/nginx/sites-enabled/default" ]
+then
+       rm /etc/nginx/sites-enabled/default
+fi
+
+cp -r etc-nginx/* /etc/nginx
+# Delete the http only config
+rm /etc/nginx/pixilab_http.conf
+sed -e "s,###DOMAIN###,$DOMAIN,g" \
+   -e "s,###BLOCKS_HOST###,$BLOCKS_HOST,g" \
+<protos/blocks.conf >/etc/nginx/sites-enabled/blocks.conf
 
 echo "••• Testing and loading nginx configuration. Watch out for any error messages!"
 nginx -t
 nginx -s reload
+
 
 # Make all that owned by blocks
 chown blocks -R $BLOCKS_HOME
