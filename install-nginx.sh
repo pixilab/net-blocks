@@ -51,9 +51,9 @@ ufw --force enable
 echo "••• Configuring nginx reverse proxy"
 
 # Configure nginx, after removing default site file
-if [ -d "/etc/nginx/sites-enabled/default" ]; then
-       rm -f /etc/nginx/sites-enabled/default
-fi
+
+rm -f /etc/nginx/sites-enabled/default
+
 
 cp -r etc-nginx/* /etc/nginx
 # Delete the https config since we are still http only

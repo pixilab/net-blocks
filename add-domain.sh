@@ -56,11 +56,7 @@ echo 'deploy-hook = systemctl reload nginx' >> /etc/letsencrypt/cli.ini
 
 echo "••• Re-configure NGINX"
 # Re-onfigure nginx, after removing default site file
-
-if [ -d "/etc/nginx/sites-enabled/default" ]
-then
-       rm /etc/nginx/sites-enabled/default
-fi
+rm -f /etc/nginx/sites-enabled/default
 
 cp -r etc-nginx/* /etc/nginx
 # Delete the http only config
