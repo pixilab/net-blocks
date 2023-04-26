@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Add the domain to nginx configuration and configure Blocks.
+# Add the domain to nginx configuration.
 
 # exit if/when any command fails; https://intoli.com/blog/exit-on-errors-in-bash-scripts/
 set -e
@@ -21,30 +21,19 @@ export DOMAIN=$1
 BLOCKS_HOST=localhost
 
 
-
-# Copy configuration file (e.g. Notes/nginx.txt) to /etc/nginx/sites-available
-# symlink from /etc/nginx/sites-enabled
-
-
-# Reload nginx config by
-#	nginx -s reload
-
-echo "••• Reconfiguring firewall for https access"
-
 # Install and configure firewall
 # ALTERNATIVELY: Use infrastructure firewall, such as on digitalocean
-
+echo "••• Reconfiguring firewall for https access"
 ufw allow "Nginx HTTPS"
 ufw allow https
 ufw --force enable
-
-
 
 # Install Lets Encrypt cert support (https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-debian-10)
 echo "••• Installing LetsEncrypt certbot for SSL certificate (with automatic renewal)"
 apt-get install -y python3-acme python3-certbot python3-mock python3-openssl python3-pkg-resources python3-pyparsing python3-zope.interface
 apt-get install -y python3-certbot-nginx
-# Then follow instructions here https://certbot.eff.org/lets-encrypt/debianbuster-nginx
+# Instructions here https://certbot.eff.org/lets-encrypt/debianbuster-nginx
+
 
 # Tell nginx to reload its config when cert is updated
 echo '' >> /etc/letsencrypt/cli.ini
@@ -52,12 +41,14 @@ echo '# Reload nginx config when cert is updated' >> /etc/letsencrypt/cli.ini
 echo 'deploy-hook = systemctl reload nginx' >> /etc/letsencrypt/cli.ini
 
 
-echo "••• Re-configuring NGINX for the domain name"
-# Re-onfigure nginx, after removing default site file
-rm -f /etc/nginx/sites-enabled/default
 
+# Re-onfigure nginx, after removing default site file
+echo "••• Re-configuring NGINX for the domain name"
+rm -f /etc/nginx/sites-enabled/default
+echo "••• Copy configuration"
 cp -r etc-nginx/* /etc/nginx
 # Delete the http only config
+echo "••• Configuring"
 rm -f /etc/nginx/conf.d/pixilab_http.conf
 sed -e "s,###DOMAIN###,$DOMAIN,g" \
    -e "s,###BLOCKS_HOST###,$BLOCKS_HOST,g" \

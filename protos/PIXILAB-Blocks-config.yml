@@ -1,5 +1,6 @@
 # PIXILAB Blocks configuration. Changes require server restart to apply.
 
+# Warning: Change the default root path will break any cashing mechanisms with reverse proxys such as NGINX.
 root: /home/blocks/PIXILAB-Blocks-root
 
 # Where to go when accessing server root
