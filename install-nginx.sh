@@ -74,6 +74,6 @@ nginx -s reload
 # Make all that owned by blocks
 chown blocks -R $BLOCKS_HOME
 
-echo "Finished."
+echo "••• DONE!"
 echo "NGINX is now running as reverse proxy in front of blocks. Access blocks with http on the server ip-address."
 echo "If you intend to use your a domain name to access Blocks run the add-domain.sh script after reading that section of the readme documentation "

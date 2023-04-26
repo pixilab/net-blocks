@@ -62,5 +62,5 @@ nginx -s reload
 echo
 echo "••• Installing free LetsEncrypt SSL certificate for $DOMAIN. Answer questions as prompted"
 certbot --nginx -d $DOMAIN
-
+echo "••• DONE!"
 echo "••• Domain added. Now re-login as user 'blocks' and execute   systemctl --user enable --now blocks"
