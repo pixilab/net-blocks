@@ -13,6 +13,7 @@ BLOCKS_HOME=/home/blocks
 BLOCKS_ROOT=$BLOCKS_HOME/PIXILAB-Blocks-root
 #Set a dummmy name
 DOMAIN="NoDomain"
+
 # Allow for proxy running on another machine (later)
 BLOCKS_HOST=localhost
 
@@ -26,7 +27,7 @@ fi
 
 
 
-echo "••• Install NGINX"
+echo "••• Installing NGINX"
 # Install nginx to use as reverse proxy and for serving static files
 apt-get install -y nginx
 
@@ -34,6 +35,7 @@ apt-get install -y nginx
 # symlink from /etc/nginx/sites-enabled
 
 # Install our custom nginx error page
+echo "••• Copy blocks custom error page"
 cp $BASEDIR/misc/error50x.html /usr/share/nginx/html/
 
 # Reload nginx config by
@@ -51,13 +53,14 @@ ufw --force enable
 echo "••• Configuring nginx reverse proxy"
 
 # Configure nginx, after removing default site file
-
+echo "••• Deleting NGINX default configuration"
 rm -f /etc/nginx/sites-enabled/default
 
-
+echo "••• Copying the blocks NGINX configuration"
 cp -r etc-nginx/* /etc/nginx
 # Delete the https config since we are still http only
 rm -f /etc/nginx/conf.d/pixilab_https.conf
+echo "••• Adding host and domain settings to blocks.conf"
 sed -e "s,###DOMAIN###,$DOMAIN,g" \
    -e "s,###BLOCKS_HOST###,$BLOCKS_HOST,g" \
 <protos/blocks.conf >/etc/nginx/sites-enabled/blocks.conf
@@ -66,10 +69,7 @@ echo "••• Testing and loading nginx configuration. Watch out for any error
 nginx -t
 nginx -s reload
 
-# Add Blocks' config file
 
-echo "••• Install Blocks config file"
-cp protos/PIXILAB-Blocks-config.yml $BLOCKS_HOME/PIXILAB-Blocks-config.yml
 
 # Make all that owned by blocks
 chown blocks -R $BLOCKS_HOME
