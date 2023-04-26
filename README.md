@@ -6,18 +6,24 @@ This is an **unsupported example**. While we attempt to keep this up to date and
 
 These scripts and files helps with installing PIXILAB Blocks on a VPS (Virtual Private Server) as well as some other "plain vanilla" server environments based on Debian 10 or similar operating systems (e.g. Ubuntu). It was initially devised for a Digital Ocean Debian 10 droplet, but has been used successfully with other hosting providers including Microsoft Azure, Linode and Vultr.
 
-The scripts and instructions presented here assume familiarity with VPSes in general, the concept of private/public keys, domain names, DNS entries and the linux terminal. Items within angle brackets shown below are placeholders, to be substituted with your own values/names as appropriate. Items in `monospaced font` are to be entered, one line at a time, at the server's command prompt. The initial installation is assumed to be done by the root user. If that user account is not available, you need to prepend  commands with *sudo*.
+The scripts and instructions presented here assume familiarity with VPSes in general, the concept of private/public keys, domain names, DNS entries and the linux terminal. Items within angle brackets shown below are placeholders, to be substituted with your own values/names as appropriate. Items in `monospaced font` are to be entered, one line at a time, at the server's command prompt. The initial installation is assumed to be done by the root user. If that user account is not available, you need to prepend commands with *sudo*.
 
 ## Instructions
-Create the droplet at digitalocean.com (or equivalent), using a private key for authentication.
 
-Create a DNS entry in some suitable DNS you have control over, such as Cloudflare (they provide free DNS services). Specify your new server's domain name (possibly using a sub-domain) and make sure it points to the IP address of the droplet. Wait for this name to propagate (e.g., use *nslookup* or similar tool to check).
+The installation is done in three separate steps. 
+Step 1. Installs Blocks and dependencies. This step leaves us with a server listening on port 8080. (http://<ip-of-your-server>:8080/edit will open Blocks editor) If this is all you need no further action is required.
+Step 2. Installs NGINX to act as a reverse proxy in front of Blocks. This step leaver us with a server listening on port 80.(http://<ip-of-your-server>/edit will open Blocks editor) If this is all you need no further action is required.
+Step 3. Adds a domain name, certificates and makes NGINX listen to port 443. Enables https access on standard https port 443. (https://<server-domain-namer>/edit will open Blocks editor)
 
-Log in to the VPS using ssh as the root user.
+Create the droplet at digitalocean.com (or equivalent), using a private key for authentication. This can also be a virtual server running Debian-based Linux. This script is tested on Debian and Ubuntu 22.04LTS minimized server.
 
-`ssh root@<ip-of-your-droplet>`
+Inspect the install scripts for details. 
 
-Once logged in, run the following commands.
+Log in to the server using ssh as the root (or sudoer) user.
+
+`ssh <username>@<ip-of-your-server>`
+
+Once logged in, run the following commands. (Remember to prepend with `sudo` if not doing this as the root user)
 
 `apt update`
 
@@ -37,7 +43,9 @@ Enter your credentials if requested.
 
 Make sure the script makes it all the way to "••• DONE!". If not, examine the output for errors and correct script and files as necessary to complete the installation.
 
-If the output shown at the end of the script run does not include your Blocks license number, you need to obtain a license from PIXILAB. That license is delivered as a file, which is then (after being transferred to the server) imported like this:
+If the output shown at the end of the script run does not include your Blocks license number, you must obtain a cloud license from PIXILAB. The license is delivered as a file, which is then transferred to the server and with and imported to the license system.
+To transfer a license file use scp like this:
+scp <your-local-file> <user>@<ip-of-your-server>:/net-blocks
 
 `cmu --import --file <filename>`
 
