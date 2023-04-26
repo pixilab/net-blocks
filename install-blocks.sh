@@ -121,6 +121,27 @@ echo "••• Copying systemd units. "
 mkdir -p $BLOCKS_HOME/.config
 cp -R $BASEDIR/config/* $BLOCKS_HOME/.config/
 
+echo "••• Adding a blocks root directory"
+cp -R protos/root $BLOCKS_ROOT
+
+# Adding a Blocks' config file
+echo "••• Copying blocks configuration file 'PIXILAB-Blocks-config.yml' file to $BLOCKS_HOME"
+cp protos/PIXILAB-Blocks-config.yml $BLOCKS_HOME/PIXILAB-Blocks-config.yml
+
+
+ # Install the blocks custom user script base from
+echo "••• Installing the latest script directory from https://github.com/pixilab/blocks-script"
+echo "••• Clone blocks-script repo"
+git clone https://github.com/pixilab/blocks-script.git
+echo "••• Check if $BLOCKS_ROOT/script/ exists if not create the directory"
+if [ ! -d "$BLOCKS_ROOT/script/" ]; then
+  mkdir $BLOCKS_ROOT/script/
+fi
+echo "••• Copying  files to $BLOCKS_ROOT/script/"
+cp -r blocks-script/* $BLOCKS_ROOT/script/
+echo "••• Cleaning up"
+rm -r blocks-script
+
 # Download and unpack Blocks and its "native" directory
 echo "••• Downloading Blocks from pixilab.se. "
 cd $BLOCKS_HOME
@@ -129,15 +150,6 @@ echo "••• Installing Blocks and cleaning up. "
 tar -xzf PIXILAB_Blocks_Linux.tar.gz
 rm PIXILAB_Blocks_Linux.tar.gz
 
-echo "••• Adding a blocks root directory"
-cp -R protos/root $BLOCKS_ROOT
-
-# Adding a Blocks' config file
-echo "••• Copying blocks configuration file 'PIXILAB-Blocks-config.yml' file to $BLOCKS_HOME"
-cp protos/PIXILAB-Blocks-config.yml $BLOCKS_HOME/PIXILAB-Blocks-config.yml
-
-#Copying an updated Script repo from GITHUB. 
-echo "••• Adding the latest script directory from https://github.com/pixilab/blocks-script"
 
 # Configure blocks user to use same shell as root
 echo "••• Setting the standard shell for the blocks user. "
@@ -154,20 +166,6 @@ cp /root/.ssh/authorized_keys $BLOCKS_HOME/.ssh/authorized_keys
 # Make user "blocks" systemd units start on boot
 echo "••• Enable user lingering on the Blocks user. "
 loginctl enable-linger blocks
-
-# Install the blocks custom user script base from
-#!/usr/bin/env bash
-echo "••• Installing blocks script base"
-echo "••• Clone blocks-script repo"
-git clone https://github.com/pixilab/blocks-script.git
-echo "••• Check if $BLOCKS_ROOT/script/ exists if not create the directory"
-if [ ! -d "$BLOCKS_ROOT/script/" ]; then
-  mkdir $BLOCKS_ROOT/script/
-fi
-echo "••• Copying  files to $BLOCKS_ROOT/script/"
-cp -r blocks-script/* $BLOCKS_ROOT/script/
-echo "••• Cleaning up"
-rm -r blocks-script
 
 # Make everything in $BLOCKS_HOME belong to the blocks user
 echo "••• Make blocks user owner of all files in blocks home directory: $BLOCKS_HOME. "
