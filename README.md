@@ -33,17 +33,17 @@ Create a virtual server running Debian-based Linux. The installation scripts is 
 
 
 ## Install Blocks
-Log in to the server using ssh as the root (or sudoer) user.
+Log in to the server using ssh as the root (or a _sudoer_) user. 
 
 `ssh <username>@<ip-of-your-server>`
 
-Once logged in, run the following commands. (Remember to prepend with *sudo* if not doing this as the root user)
+Once logged in, run the following commands:
 
-`apt update`
+`sudo apt update`
 
-`apt -y upgrade`
+`sudo apt -y upgrade`
 
-`apt -y install git`
+`sudo apt -y install git`
 
 `git clone https://github.com/pixilab/net-blocks.git`
 
@@ -76,7 +76,7 @@ Set a password for the _blocks_ user using the command:
 `passwd blocks`
 
 
-## Enable the server, start now and on boot {#enable_server}
+## Enable the server, start now and on boot
 Log out of the root account by enter this command:
 
 `exit`
@@ -96,15 +96,18 @@ Verify blocks was started OK
 Looking for its status being _Active: active (running)_
 
 ## Install NGINX
-To install NGINX as reverse proxy in front of Blocks server simply run the install-nginx script. 
+To install NGINX as reverse proxy in front of Blocks server, first exit any previous SSH session, then log in to the server using ssh as the root (or a _sudoer_) user. 
+
+`ssh <username>@<ip-of-your-server>` 
+
+Then run the _install-nginx_ script:
 
 `sudo ./install-nginx.sh`
 
 ## Set up a domain name
 Set up the domain name to be used, along with a SSL certificate (HTTPS) for your domain. This assumes that a DNS entry has been established, as mentioned above, pointing your domain name to your newly created server.
 
-
-`sudo ./add-domain.sh _blocks-server-domain-name_`
+`sudo ./add-domain.sh <blocks-server-domain-name>`
 
 Enter your email address and other preferences when prompted by the certbot.
 

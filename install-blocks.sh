@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
-# Setup script for running Blocks behind nginx reverse proxy on a bare-bones Debian 10/11.
-# Script is assumed to run as root
+# Setup script for installing Blocks.
+# Written to run on a bare-bones Debian 10/11, but has also been used on corresponding Ubuntu server edition.
+# Script is assumed to run with root privileges
 
 # https://stackoverflow.com/questions/821396/aborting-a-shell-script-if-any-command-returns-a-non-zero-value
 set -eu
 
-#Store the scripts base directory 
+#Store the scripts base directory
 if [ -L $0 ] ; then
     BASEDIR=$(cd "$(dirname "$(readlink $0)")"; pwd -P) # for symbolic link
 else
@@ -14,7 +15,7 @@ else
 fi
 
 echo "••• Bumping max number of file descriptors to something more useful (for, e.g., websockets)"
-FDS=5000
+FDS=10000
 echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/user.conf
 echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/system.conf
 echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/security/limits.conf
@@ -176,7 +177,7 @@ chgrp -R blocks $BLOCKS_HOME
 # Set the desired local time zone for the server
 echo "••• Setting default timezone to Europe/Stockholm. "
 timedatectl set-timezone Europe/Stockholm
-echo "Reset timezone to you preferred timezone with:" 
+echo "Reset timezone to you preferred timezone with:"
 echo "timedatectl set-timezone Europe/Stockholm. "
 echo "Search your nearest timezone with:"
 echo "timedatectl list-timezones | grep 'Stockholm'"

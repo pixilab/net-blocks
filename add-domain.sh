@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Add the domain to nginx configuration.
+
+# Adds a domain to nginx configuration, including Letsencrypt certificate with auto-renewal
 
 # exit if/when any command fails; https://intoli.com/blog/exit-on-errors-in-bash-scripts/
 set -e
@@ -63,4 +64,3 @@ echo
 echo "••• Installing free LetsEncrypt SSL certificate for $DOMAIN. Answer questions as prompted"
 certbot --nginx -d $DOMAIN
 echo "••• DONE!"
-echo "••• Domain added. Now re-login as user 'blocks' and execute   systemctl --user enable --now blocks"

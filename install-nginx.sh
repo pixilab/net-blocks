@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-# Setup script for running Blocks behind nginx reverse proxy on a bare-bones Debian 10/11.
-# Script is assumed to run as root
+# Setup script installing nginx as a reverse proxy in front of Blocks,
+# Written to run on a bare-bones Debian 10/11, but has also been used on corresponding Ubuntu server edition.
+# Script is assumed to run with root privileges
 
 # https://stackoverflow.com/questions/821396/aborting-a-shell-script-if-any-command-returns-a-non-zero-value
 set -eu
@@ -10,22 +11,18 @@ set -eu
 # Define variables from command line parameters, and some others
 
 BLOCKS_HOME=/home/blocks
-BLOCKS_ROOT=$BLOCKS_HOME/PIXILAB-Blocks-root
-#Set a dummmy name
+#Set a dummmy domain name
 DOMAIN="NoDomain"
 
 # Allow for proxy running on another machine (later)
 BLOCKS_HOST=localhost
 
-#Store the scripts base directory 
+#Store the scripts base directory
 if [ -L $0 ] ; then
     BASEDIR=$(cd "$(dirname "$(readlink $0)")"; pwd -P) # for symbolic link
 else
     BASEDIR=$(cd "$(dirname "$0")"; pwd -P) # for normal file
 fi
-
-
-
 
 echo "••• Installing NGINX"
 # Install nginx to use as reverse proxy and for serving static files
@@ -69,11 +66,10 @@ echo "••• Testing and loading nginx configuration. Watch out for any error
 nginx -t
 nginx -s reload
 
-
-
 # Make all that owned by blocks
 chown blocks -R $BLOCKS_HOME
 
 echo "••• DONE!"
 echo "NGINX is now running as reverse proxy in front of blocks. Access blocks with http on the server ip-address."
-echo "If you intend to use your a domain name to access Blocks run the add-domain.sh script after reading that section of the readme documentation "
+echo "If you intend to use your a domain name to access Blocks, you can now run the add-domain.sh script"
+echo "after reading that section of the documentation."
