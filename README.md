@@ -25,7 +25,7 @@ Installs and configure NGINX to act as a reverse proxy in front of Blocks. This 
 
 **Step 3**   
 Adds a domain name, certificates and makes NGINX listen to port 443. Enables https access on standard https port 443. (https://<server-domain-namer>/edit will open Blocks editor)  
-[Add your domain name](#Set-up-a-domain-name)  
+[Add your domain name](#set-up-a-domain-name)  
 
 ## Set up a computer
 Create a virtual server running Debian-based Linux. The installation scripts is tested on Ubuntu 22.04LTS minimized server version running in HyperV virtualisation environment. The script can also be used to configure a droplet with a 3rd party provider such as Digital Oscean or equivalent.  
