@@ -53,7 +53,7 @@ Enter your credentials if requested.
 
 `chmod u+x *.sh`
 
-`sudo ./install.sh`
+`sudo ./install-blocks.sh`
 
 Make sure the script makes it all the way to "••• DONE!". If not, examine the output for errors and correct script and files as necessary to complete the installation.  
 If the output shown at the end of the script run does not include your Blocks license number, you must obtain a cloud license from PIXILAB.   
