@@ -14,23 +14,20 @@ The installation is done in three separate steps.
 _Please inspect and make yourself familiar with the steps inside each script._
 
 **Step 1**  
-Installs Blocks, OpenJDK (java runtime environment), Codemeter(for licensing) and some administrative tools. This step leaves us with a server listening on port 8080. (http://<ip-of-your-server>:8080/edit will open Blocks editor) If this is all you need no further action is required.  
+Installs Blocks, OpenJDK (java runtime environment), Codemeter(for licensing) and some administrative tools. This step leaves you with a server listening on port 8080. Once done, http://ip-address-of-your-server:8080/edit will open Blocks' editor. If this is all you need no further action is required.  
 [Install Blocks](#install-blocks)  
 
 **Step 2**  
-Installs and configure NGINX to act as a reverse proxy in front of Blocks. This step leaver us with a server listening on port 80.  
-(http://<ip-of-your-server>/edit will open Blocks editor) 
- If this is all you need no further action is required.  
+Installs and configure NGINX to act as a reverse proxy in front of Blocks, resulting in a server listening on port 80, with nginx serving static files, thereby offloading this duty from Blocks.  
+Once done, http://ip-address-of-your-server/edit will open Blocks' editor. 
 [Install NGINX](#install-nginx)  
 
 **Step 3**   
-Adds a domain name, certificates and makes NGINX listen to port 443. Enables https access on standard https port 443. (https://<server-domain-namer>/edit will open Blocks editor)  
+Adds a domain name, an SSL certificates and makes NGINX listen on port 443. This enables encrypted https access to blocks. Once done, https://your-domain-name/edit will open Blocks' editor. Note that for this step to succeed, your server must be accessible from the internet on port 80 using your-domain-name.  
 [Add your domain name](#set-up-a-domain-name)  
 
 ## Set up a computer
 Create a virtual server running Debian-based Linux. The installation scripts is tested on Ubuntu 22.04LTS minimized server version running in HyperV virtualisation environment. The script can also be used to configure a droplet with a 3rd party provider such as Digital Oscean or equivalent.  
-
-
 
 ## Install Blocks
 Log in to the server using ssh as the root (or a _sudoer_) user. 
