@@ -80,7 +80,7 @@ Log out of the root account by enter this command:
 
 Log back in, now as the _blocks_ user. 
 
-`ssh blocks@<@<ip-of-your-server>`
+`ssh blocks@<ip-of-your-server>`
 
 Enable and start Blocks
 
