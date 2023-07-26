@@ -163,7 +163,7 @@ echo "••• Syncing any ssh authorized keys making also the blocks user acce
 mkdir -p $BLOCKS_HOME/.ssh/
 cp /root/.ssh/authorized_keys $BLOCKS_HOME/.ssh/authorized_keys
 
-# See README for installing .config/systemd/user files and enabling user systemd over ssh
+
 # Make user "blocks" systemd units start on boot
 echo "••• Enable user lingering on the Blocks user. "
 loginctl enable-linger blocks
