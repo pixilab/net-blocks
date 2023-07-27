@@ -139,7 +139,11 @@ ufw --force enable
 # apt install fail2ban
 
 # Download latest net-blocks files from git
-git clone https://github.com/pixilab/net-blocks.git $BASEDIR/net-blocks
+if [ -d "$BASEDIR/net-blocks" ]; then
+  git -C $BASEDIR/net-blocks pull
+else
+  git clone https://github.com/pixilab/net-blocks.git $BASEDIR/net-blocks
+fi
 
 echo "••• Installing Blocks and associated files"
 echo "••• Copying systemd units. "
@@ -185,9 +189,11 @@ cp /root/.profile $BLOCKS_HOME
 # Copy root's authorized_keys to the 'blocks' user, to provide access using same method
 # This assumes ssh keys have been set up for root (done by default at digitalocean)
 echo "••• Syncing any ssh authorized keys making also the blocks user accessable. "
+AUTH=/root/.ssh/authorized_keys
 mkdir -p $BLOCKS_HOME/.ssh/
-cp /root/.ssh/authorized_keys $BLOCKS_HOME/.ssh/authorized_keys
-
+if [-f "$AUTH"]; then
+  cp $AUTH $BLOCKS_HOME/.ssh/authorized_keys
+fi
 
 # Make user "blocks" systemd units start on boot
 echo "••• Enable user lingering on the Blocks user. "
