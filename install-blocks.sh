@@ -34,6 +34,14 @@ fi
 echo -e "APT{Get{Assume-Yes true; Fix-Broken true;}}" > $BASEDIR/apt.conf
 export APT_CONFIG=$BASEDIR/apt.conf
 
+# Set the desired local time zone for the server
+echo "••• Setting default timezone to Europe/Stockholm. "
+timedatectl set-timezone Europe/Stockholm
+echo "Reset timezone to you preferred timezone with:"
+echo "timedatectl set-timezone Europe/Stockholm. "
+echo "Search your nearest timezone with:"
+echo "timedatectl list-timezones | grep 'Stockholm'"
+
 # Set up locale to stop pearl from bitching about it
 echo "••• Adding locales and generate localisation files. "
 if ! command -v locale-gen &> /dev/null
@@ -41,7 +49,14 @@ then
         echo "••• locale-gen missing, installing locales."
         apt install locales
 fi
-locale-gen en_US.UTF-8
+
+# Uncomment the locales needed in /etc/locale.gen to enable them
+sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+sed -i -e 's/# sv_SE.UTF-8 UTF-8/sv_SE.UTF-8 UTF-8/' /etc/locale.gen
+# Unset LANG (allows ssh session to forward settings when connecting to the server instead)
+update-locale LANG
+# Generate locales
+dpkg-reconfigure --frontend=noninteractive locales
 
 # specify the block user home dir
 BLOCKS_HOME=/home/blocks
@@ -182,14 +197,6 @@ loginctl enable-linger blocks
 echo "••• Make blocks user owner of all files in blocks home directory: $BLOCKS_HOME. "
 chown -R blocks $BLOCKS_HOME
 chgrp -R blocks $BLOCKS_HOME
-
-# Set the desired local time zone for the server
-echo "••• Setting default timezone to Europe/Stockholm. "
-timedatectl set-timezone Europe/Stockholm
-echo "Reset timezone to you preferred timezone with:"
-echo "timedatectl set-timezone Europe/Stockholm. "
-echo "Search your nearest timezone with:"
-echo "timedatectl list-timezones | grep 'Stockholm'"
 
 echo "••• Listing any connected license keys"
 cmu  --list
