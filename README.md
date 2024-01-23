@@ -111,7 +111,7 @@ Enter your email address and other preferences when prompted by the certbot.
 
 Make sure the script makes it all the way to "••• Domain added."
 
-Edit: if you get error messages trying to edit in blocks please update the etc/nginx/nginx.conf and change the user to blocks at the top of the file. (TODO: change this in the script)
+Edit: if you get error messages trying to edit in blocks please update the etc/nginx/nginx.conf and change the user to blocks at the top of the file. Restart Nginx, `systemctl restart nginx` (TODO: change this in the script)
 ### Firewall
 
 Depending on the final setup the firewall may need further configuration.   
