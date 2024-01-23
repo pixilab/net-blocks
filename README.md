@@ -104,15 +104,16 @@ Then run the _install-nginx_ script:
 ## Set up a domain name
 Set up the domain name to be used, along with a SSL certificate (HTTPS) for your domain. This assumes that a DNS entry has been established, as mentioned above, pointing your domain name to your newly created server.
 It is recommend to run preflight test of the domain name for http-01 challenge (the we we identify us as having control over the webserver) over at https://letsdebug.net/ before running the script. 
+
 `sudo ./add-domain.sh <blocks-server-domain-name>`
 
 Enter your email address and other preferences when prompted by the certbot.
 
 Make sure the script makes it all the way to "••• Domain added."
 
-
-
+Edit: if you get error messages trying to edit in blocks please update the etc/nginx/nginx.conf and change the user to blocks at the top of the file. (TODO: change this in the script)
 ### Firewall
+
 Depending on the final setup the firewall may need further configuration.   
 Please review the current firewall settings after the final step above to make sure it fits your needs and your organisations policies using this command:
 
