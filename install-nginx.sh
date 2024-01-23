@@ -69,6 +69,9 @@ nginx -s reload
 # Make all that owned by blocks
 chown blocks -R $BLOCKS_HOME
 
+# Associate blocks user home dir to nginx default user "www-data" as i.e Ubuntu does not add execution permission to that directory by default. We figure this is a rereasonable way of handling the permissons. 
+chgrp www-data $BLOCKS_HOME
+
 echo "••• DONE!"
 echo "NGINX is now running as reverse proxy in front of blocks. Access blocks with http on the server ip-address."
 echo "If you intend to use your a domain name to access Blocks, you can now run the add-domain.sh script"
