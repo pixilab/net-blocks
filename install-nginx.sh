@@ -68,9 +68,10 @@ nginx -s reload
 
 # Make all that owned by blocks
 chown blocks -R $BLOCKS_HOME
+#Allow others to traverse the blocks user home directory. This was default on Ubuntu up until 21.04(?) and is still default on Debian
+#We do this to allow nginx (running as www-data user by default) to access the blocks-root files.
+chmod o+x $BLOCKS_HOME
 
-# Associate blocks user home dir to nginx default user "www-data" as i.e Ubuntu does not add execution permission to that directory by default. We figure this is a rereasonable way of handling the permissons. 
-chgrp www-data $BLOCKS_HOME
 
 echo "••• DONE!"
 echo "NGINX is now running as reverse proxy in front of blocks. Access blocks with http on the server ip-address."
