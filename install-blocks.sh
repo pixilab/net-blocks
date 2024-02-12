@@ -159,7 +159,7 @@ echo "••• Copying blocks configuration file 'PIXILAB-Blocks-config.yml' fi
 cp $BASEDIR/net-blocks/protos/PIXILAB-Blocks-config.yml $BLOCKS_HOME/PIXILAB-Blocks-config.yml
 
 
- # Install the blocks custom user script base from
+# Install drivers, scripts and script support files from github
 echo "••• Installing the latest script directory from https://github.com/pixilab/blocks-script"
 echo "••• Clone blocks-script repo"
 git clone https://github.com/pixilab/blocks-script.git $BASEDIR/blocks-script
@@ -191,7 +191,7 @@ cp /root/.profile $BLOCKS_HOME
 echo "••• Syncing any ssh authorized keys making also the blocks user accessable. "
 AUTH=/root/.ssh/authorized_keys
 mkdir -p $BLOCKS_HOME/.ssh/
-if [-f "$AUTH"]; then
+if [ -f $AUTH ]; then
   cp $AUTH $BLOCKS_HOME/.ssh/authorized_keys
 fi
 
