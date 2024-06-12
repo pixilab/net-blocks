@@ -22,7 +22,7 @@ echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/s
 
 echo "••• Adding the blocks user account. You can set a password later using this command:  sudo passwd blocks"
 # Check if user blocks already exists
-if grep -q "blocks" /etc/passwd; then
+if grep -q '^blocks:' /etc/passwd; then
   echo  "Blocks user already exists"
 else
   echo "Adding blocks user"
