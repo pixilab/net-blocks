@@ -12,6 +12,9 @@ serverRootRedirect: /spot/?mobile=Mob1
 server:
   type: pixilab_server
   requireHttps: false
+  applicationConnectors:
+    - type: http
+      useForwardedHeaders: true
   auth:
     servlet:
       security:
