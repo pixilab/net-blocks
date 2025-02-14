@@ -1,0 +1,15 @@
+Files placed in this directory are used to update PIXILAB Player.
+For this to work, files must be readable by ALL users (in order
+to be made available also through nginx).
+
+That can be accomplished using the following command (executed from
+within this directory):
+
+chmod -R o+r .
+
+Likewise, any directories must be traversable by all users. That can be
+accomplished by the following command (executed frmo within this
+directory):
+
+find . -type d -print0 | xargs -0 chmod o+x
+

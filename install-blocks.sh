@@ -90,6 +90,10 @@ apt install snapd
 snap install core
 snap install chromium
 
+# Disable CUPS which isn't needed for anything anyway
+snap stop cups
+snap disable cups
+
 echo "••• Installing License Key Software"
 # download and install codemeter support from our mirror
 wget https://pixilab.se/outgoing/blocks/cloud-support/codemeter.deb
@@ -203,6 +207,10 @@ loginctl enable-linger blocks
 echo "••• Make blocks user owner of all files in blocks home directory: $BLOCKS_HOME. "
 chown -R blocks $BLOCKS_HOME
 chgrp -R blocks $BLOCKS_HOME
+
+# Make all directories and files under public readable/traversable by all users
+find $BLOCKS_ROOT/public/ -type d -print0 | xargs -0 chmod o+x
+chmod -R o+r $BLOCKS_ROOT/public/
 
 echo "••• Listing any connected license keys"
 cmu  --list
