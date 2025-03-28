@@ -83,12 +83,12 @@ apt install temurin-11-jdk
 #	sudo update-alternatives --config java
 
 echo "••• Installing Chromium (used headless as web renderer by Blocks)"
-# Older non-snap Chromium, not being updated (Debian 10 only)
-# apt install chromium
-# So use snap-packaged Chromium instead (only option for Debian 11+)
+# Install snap-packaged Chromium and lock the current version
 apt install snapd
 snap install core
 snap install chromium
+snap refresh --hold=forever chromium
+
 
 # Disable CUPS which isn't needed for anything anyway
 snap stop cups
