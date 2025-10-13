@@ -110,7 +110,7 @@ rm ./axprotector.deb
 # cmu --add-server $LICENSE_SERVER
 
 # Disable codemeter's webadmin, which isn't needed on the server
-systemctl disable codemeter-webadmin.service
+systemctl disable --now codemeter-webadmin.service
 
 echo "••• Installing some useful command line utilities"
 
