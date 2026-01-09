@@ -72,7 +72,7 @@ After successfully upload of the license file, run the import with this command 
 Verify that the license is imported OK using the command `cmu --list`, which should now show your license number.  
 Set a password for the _blocks_ user using the command:
 
-`passwd blocks`
+`sudo passwd blocks`
 
 
 ## Enable the server, start now and on boot
