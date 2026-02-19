@@ -25,7 +25,7 @@ Once done, http://ip-address-of-your-server/edit will open Blocks' editor.
 [Install NGINX](#install-nginx)  
 
 **Step 3**   
-Adds a domain name, an SSL certificates and makes NGINX listen on port 443. This enables encrypted https access to blocks. Once done, https://your-domain-name/edit will open Blocks' editor. Note that for this step to succeed, your server must be accessible from the internet on port 80 using your-domain-name.  
+Adds a domain name, an SSL certificates and makes NGINX listen on port 443. This enables encrypted https access to blocks. Once done, https://your-domain-name/edit will open Blocks' editor. Note that for this step to succeed, your server _must be accessible from the internet_ on port 80 using your-domain-name.  
 [Add your domain name](#set-up-a-domain-name)  
 
 ## Set up a computer
@@ -103,9 +103,12 @@ Then run the _install-nginx_ script:
 
 `sudo ./install-nginx.sh`
 
-## Set up a domain name
-Set up the domain name to be used, along with a SSL certificate (HTTPS) for your domain. This assumes that a DNS entry has been established, as mentioned above, pointing your domain name to your newly created server.
-It is recommend to run preflight test of the domain name for http-01 challenge (the we we identify us as having control over the webserver) over at https://letsdebug.net/ before running the script. 
+## Internet Domain Name and HTTPS
+**IMPORTANT**: This section applies primarily to cloud-based servers. If you're using this script to install Blocks on an on-premise server, you must first make sure that port 80 and 443 of your server is accessible from the internet, using your domain name. It must remain internet accessible for letsencrypt's automatic certificate renewal.
+
+This script configures your Blocks server to handle your domain name, and configures a SSL certificate for a secure (HTTPS) connection. Before proceeding, ensure that a DNS entry has been established, as mentioned above, pointing your domain name to your newly created server.
+
+Run a preflight test of the domain name making sure that the "http-01 challenge" works, as that mechanism will be used to indicate to letsencrypt that you have control over the server. Then head over to https://letsdebug.net/ and follow the instructions there to verify that things are set up correctly before proceeding. Then run this script to set up the letsencrypt HTTPS certificate: 
 
 `sudo ./add-domain.sh <blocks-server-domain-name>`
 
