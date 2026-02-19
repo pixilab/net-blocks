@@ -108,7 +108,9 @@ Then run the _install-nginx_ script:
 
 This script configures your Blocks server to handle your domain name, and configures a SSL certificate for a secure (HTTPS) connection. Before proceeding, ensure that a DNS entry has been established, as mentioned above, pointing your domain name to your newly created server.
 
-Run a preflight test of the domain name making sure that the "http-01 challenge" works, as that mechanism will be used to indicate to letsencrypt that you have control over the server. Then head over to https://letsdebug.net/ and follow the instructions there to verify that things are set up correctly before proceeding. Then run this script to set up the letsencrypt HTTPS certificate: 
+You should now run a preflight test of the domain name to make sure that the "http-01 challenge" works. That mechanism is used to indicate to letsencrypt that you have control over the server and domain name. Head to https://letsdebug.net/ and follow the instructions there to verify that things are set up correctly before proceeding. 
+
+Once that has been done successfully, run this script to set up the letsencrypt HTTPS certificate: 
 
 `sudo ./add-domain.sh <blocks-server-domain-name>`
 
