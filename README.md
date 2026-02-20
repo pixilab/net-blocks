@@ -6,7 +6,7 @@ If you need help setting up Blocks in the cloud, or on some other suitable serve
 
 ## Scripts for building a Blocks server
 
-These scripts and files helps with installing PIXILAB Blocks on a VPS (Virtual Private Server) as well as some other "plain vanilla" server environments based on Debian 10/11 or similar operating systems (e.g. Ubuntu). It was initially devised for a Digital Ocean Debian droplet, but has been used successfully with other hosting providers including Microsoft Azure, Linode and Vultr.
+These scripts and files helps with installing PIXILAB Blocks on a VPS (Virtual Private Server) as well as some other "plain vanilla" server environments based on Debian 12/13 or similar operating systems (e.g. Ubuntu). It was initially devised for a Digital Ocean Debian "droplet", but has been used successfully with other hosting providers including Microsoft Azure, Linode and Vultr.
 
 The scripts and instructions presented here assume familiarity with VPSes in general, the concept of private/public keys, domain names, DNS entries and the linux terminal. Items within angle brackets shown below are placeholders, to be substituted with your own values/names as appropriate. Items in `monospaced font` are to be entered, one line at a time, at the server's command prompt. The initial installation is assumed to be done by the root user. If that user account is not available, an account that is member of the sudoers group must be used and you will need to prepend some commands with _sudo_.
 
@@ -29,7 +29,7 @@ Adds a domain name, an SSL certificates and makes NGINX listen on port 443. This
 [Add your domain name](#set-up-a-domain-name)  
 
 ## Set up a computer
-Create a virtual server running Debian-based Linux. The installation scripts is tested on Ubuntu 22.04LTS minimized server version running in HyperV virtualisation environment. The script can also be used to configure a droplet with a 3rd party provider such as Digital Oscean or equivalent.  
+Create a virtual server running a Debian-based Linux distribution. The installation scripts is tested on Ubuntu LTS server version running under HyperV virtualized environment, but has also been used with various VPS providers offering Debian/Ubuntu base OS, as mentioned above.  
 
 ## Install Blocks
 Log in to the server using ssh as the root (or a _sudoer_) user. 
