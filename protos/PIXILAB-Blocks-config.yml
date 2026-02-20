@@ -1,14 +1,19 @@
 # PIXILAB Blocks configuration. Changes require server restart to apply.
 
-# Warning: Change the default root path will break any cashing mechanisms with reverse proxys such as NGINX.
+# Root path where Blocks finds all its data.
+# IUMPORTANT:
+# If you use NGINX as reverse proxy and to serve static content, remember
+# to update its configuration as well if you change the root path. NGINX'
+# config file is typically located at /etc/nginx/sites-enabled
 root: /home/blocks/PIXILAB-Blocks-root
 
-# Where to go when accessing server root
+# Where to go when accessing the server origin with no path
 serverRootRedirect: /spot/?mobile=Mob1
 
-# Configure server security.
-# We're using nginx to handle (and enforce) HTTPS, so no need to bother Blocks with that.
-# Specify use of form authentication, allowing for "log-out" functionality.
+# Configure server security. The settings below are appropriate when using NGINX
+# as a reverse proxy along with letsencrypt (or other) SSL certificate to provide
+# HTTPS access to the server. If you're not do so, replace the word internalForm
+# below with internalDigest for slightly improved security.
 server:
   type: pixilab_server
   requireHttps: false
