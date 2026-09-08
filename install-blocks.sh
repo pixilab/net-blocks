@@ -76,8 +76,8 @@ apt update
 apt upgrade
 
 # Install Java VM
-echo "••• Installing Java OpenJDK platform"
-apt install temurin-11-jdk
+echo "••• Installing Java OpenJDK"
+apt install openjdk-11-jdk
 
 # to switch java VM, if you have many, run this later:
 #	sudo update-alternatives --config java

@@ -1,7 +1,7 @@
 # PIXILAB Blocks configuration. Changes require server restart to apply.
 
 # Root path where Blocks finds all its data.
-# IUMPORTANT:
+# IMPORTANT:
 # If you use NGINX as reverse proxy and to serve static content, remember
 # to update its configuration as well if you change the root path. NGINX'
 # config file is typically located at /etc/nginx/sites-enabled
