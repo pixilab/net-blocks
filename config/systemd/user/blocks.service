@@ -11,7 +11,7 @@ StartLimitBurst=10
 EnvironmentFile=%h/.config/systemd/user/blocks.service.config
 
 StandardError=journal
-StandardOutput=journal
+StandardOutput=null
 WorkingDirectory=%h
 TimeoutStopSec=40
 Restart=on-failure
@@ -19,10 +19,10 @@ RestartSec=5
 LimitNOFILE=5000
 SuccessExitStatus=143
 
-ExecStart=/usr/bin/java \
-        -Djava.library.path=%h/native:/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib \
-        $BLOCKS_VM_OPTIONS \
-        -jar %h/PIXILAN.jar $BLOCKS_OPTIONS
+ExecStart=%h/java/bin/java \
+    -Djava.library.path=%h/native:/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib \
+    $BLOCKS_VM_OPTIONS \
+    -jar %h/PIXILAN.jar $BLOCKS_OPTIONS
 
 [Install]
 WantedBy=default.target

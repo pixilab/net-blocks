@@ -1,26 +1,26 @@
 #!/usr/bin/env bash
 
 # Setup script for installing Blocks.
-# Written to run on a bare-bones Debian 10/11, but has also been used on corresponding Ubuntu server edition.
-# Script is assumed to run with root privileges
+# Written to run on a bare-bones Debian 12/13, but has also been used on corresponding Ubuntu server edition.
+# Script is assumed to run with root privileges.
 
-# https://stackoverflow.com/questions/821396/aborting-a-shell-script-if-any-command-returns-a-non-zero-value
+# Abort script on error
 set -eu
 
-#Store the scripts base directory
+# Grab the script's base directory
 if [ -L $0 ] ; then
     BASEDIR=$(cd "$(dirname "$(readlink $0)")"; pwd -P) # for symbolic link
 else
     BASEDIR=$(cd "$(dirname "$0")"; pwd -P) # for normal file
 fi
 
-echo "••• Bumping max number of file descriptors to something more useful (for, e.g., websockets)"
+echo "••• Bumping max number of file descriptors (for, e.g., websockets)"
 FDS=10000
 echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/user.conf
 echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/system.conf
 echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/security/limits.conf
 
-echo "••• Adding the blocks user account. You can set a password later using this command:  sudo passwd blocks"
+echo "••• Adding the blocks user account. Set a password later using this command: sudo passwd blocks"
 # Check if user blocks already exists
 if grep -q '^blocks:' /etc/passwd; then
   echo  "Blocks user already exists"
@@ -75,20 +75,8 @@ apt update
 # Perform general system software upgrade
 apt upgrade
 
-# Install Java VM
-echo "••• Installing Java 11 runtime"
-apt install temurin-11-jdk
-
-# to switch java VM, if you have many, run this later:
-#	sudo update-alternatives --config java
-
-echo "••• Installing Chromium (used headless as web renderer by Blocks)"
-# Install snap-packaged Chromium and lock the current version
-apt install snapd
-snap install core
-snap install chromium
-snap refresh --hold=forever chromium
-
+echo "••• Installing headless chromium (used as web renderer by Blocks)"
+apt install chromium-headless-shell
 
 # Disable CUPS which isn't needed for anything anyway
 snap stop cups
@@ -179,11 +167,11 @@ rm -r $BASEDIR/blocks-script
 # Download and unpack Blocks and its "native" directory
 echo "••• Downloading Blocks from pixilab.se. "
 cd $BLOCKS_HOME
-wget https://pixilab.se/outgoing/blocks/PIXILAB_Blocks_Linux.tar.gz
+BLOCKS_LINUX=PIXILAB_Blocks_Linux.tar.gz
+wget https://pixilab.se/outgoing/blocks/$BLOCKS_LINUX
 echo "••• Installing Blocks and cleaning up. "
-tar -xzf PIXILAB_Blocks_Linux.tar.gz
-rm PIXILAB_Blocks_Linux.tar.gz
-
+tar -xzf $BLOCKS_LINUX
+rm $BLOCKS_LINUX
 
 # Configure blocks user to use same shell as root
 echo "••• Setting the standard shell for the blocks user. "
@@ -199,11 +187,9 @@ if [ -f $AUTH ]; then
   cp $AUTH $BLOCKS_HOME/.ssh/authorized_keys
 fi
 
-# Make user "blocks" systemd units start on boot
-echo "••• Enable user lingering on the Blocks user. "
+echo "••• Make Blocks user's systemd units start on boot"
 loginctl enable-linger blocks
 
-# Make everything in $BLOCKS_HOME belong to the blocks user
 echo "••• Make blocks user owner of all files in blocks home directory: $BLOCKS_HOME. "
 chown -R blocks $BLOCKS_HOME
 chgrp -R blocks $BLOCKS_HOME
