@@ -16,7 +16,7 @@ The installation is done in three separate steps.
 _Please inspect and make yourself familiar with the steps inside each script._
 
 **Step 1**  
-Installs Blocks, OpenJDK (java runtime environment), Codemeter(for licensing) and some administrative tools. This step leaves you with a server listening on port 8080. Once done, http://ip-address-of-your-server:8080/edit will open Blocks' editor. If this is all you need no further action is required.  
+Installs Blocks, java runtime environment, CodeMeter (licensing) and some administrative tools. This step leaves you with a server listening on port 8080. Once done, http://ip-address-of-your-server:8080/edit will open Blocks' editor. If this is all you need no further action is required.  
 [Install Blocks](#install-blocks)  
 
 **Step 2**  

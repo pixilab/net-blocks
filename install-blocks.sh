@@ -16,9 +16,9 @@ fi
 
 echo "••• Bumping max number of file descriptors (for, e.g., websockets)"
 FDS=10000
-echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/user.conf
-echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/system.conf
-echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/security/limits.conf
+echo "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/user.conf
+echo "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/system.conf
+echo "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/security/limits.conf
 
 echo "••• Adding the blocks user account. Set a password later using this command: sudo passwd blocks"
 # Check if user blocks already exists
@@ -31,7 +31,7 @@ fi
 
 # Use apt which is better at installing things in the right order, a bit smarter, and show status bar
 # set default options suitable for scripted install
-echo -e "APT{Get{Assume-Yes true; Fix-Broken true;}}" > $BASEDIR/apt.conf
+echo 'APT{Get{Assume-Yes "true"; Fix-Broken "true";}}' > $BASEDIR/apt.conf
 export APT_CONFIG=$BASEDIR/apt.conf
 
 # Set the desired local time zone for the server
@@ -47,7 +47,7 @@ echo "••• Adding locales and generate localisation files. "
 if ! command -v locale-gen &> /dev/null
 then
         echo "••• locale-gen missing, installing locales."
-        apt install locales
+        apt install -y  locales
 fi
 
 # Uncomment the locales needed in /etc/locale.gen to enable them
@@ -62,34 +62,21 @@ dpkg-reconfigure --frontend=noninteractive locales
 BLOCKS_HOME=/home/blocks
 BLOCKS_ROOT=$BLOCKS_HOME/PIXILAB-Blocks-root
 
-# Java install add repo
-echo "••• Adding Adoptium repo for the Java OpenJDK install"
-apt update
-apt install wget apt-transport-https
-wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /usr/share/keyrings/adoptium.asc
-echo "deb [signed-by=/usr/share/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | tee /etc/apt/sources.list.d/adoptium.list
-
-# Update with package info from above repos
-apt update
-
 # Perform general system software upgrade
+apt update
 apt upgrade
 
 echo "••• Installing headless chromium (used as web renderer by Blocks)"
-apt install chromium-headless-shell
-
-# Disable CUPS which isn't needed for anything anyway
-snap stop cups
-snap disable cups
+apt install -y  chromium-headless-shell
 
 echo "••• Installing License Key Software"
 # download and install codemeter support from our mirror
 wget https://pixilab.se/outgoing/blocks/cloud-support/codemeter.deb
-apt install ./codemeter.deb
+apt install -y  ./codemeter.deb
 rm ./codemeter.deb
 
 wget https://pixilab.se/outgoing/blocks/cloud-support/axprotector.deb
-apt install ./axprotector.deb
+apt install -y  ./axprotector.deb
 rm ./axprotector.deb
 
 
@@ -103,32 +90,32 @@ systemctl disable --now codemeter-webadmin.service
 echo "••• Installing some useful command line utilities"
 
 # Some additional, useful monitoring and maintenance programs
-apt install htop
+apt install -y  htop
 # Efficient remote and local file synchronization
-apt install rsync
+apt install -y  rsync
 # Network traffic status monitor
-apt install vnstat
+apt install -y  vnstat
 # Network performance
-apt install iftop
+apt install -y  iftop
 # Disk performance
-apt install iotop
+apt install -y  iotop
 # Zip and unzip functionality
-apt install zip
+apt install -y  zip
 # Git, used to download scripts later
-apt install git
+apt install -y  git
 
 echo "••• Configuring firewall for Blocks access on port 8080 and ssh access"
 
 # Install and configure firewall
 # ALTERNATIVELY: Use infrastructure firewall, such as on digitalocean
-apt install ufw
+apt install -y  ufw
 ufw allow OpenSSH
 ufw allow ssh
 ufw allow 8080/tcp
 ufw --force enable
 
 # Optionally install intrusion detection with basic configuration
-# apt install fail2ban
+# apt install -y  fail2ban
 
 # Download latest net-blocks files from git
 if [ -d "$BASEDIR/net-blocks" ]; then
