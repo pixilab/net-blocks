@@ -167,7 +167,7 @@ rm -r $BASEDIR/blocks-script
 # Download and unpack Blocks and its "native" directory
 echo "••• Downloading Blocks from pixilab.se. "
 cd $BLOCKS_HOME
-BLOCKS_LINUX=PIXILAB_Blocks_Linux.tar.gz
+BLOCKS_LINUX=PIXILAB_Blocks_8_Linux.tar.gz
 wget https://pixilab.se/outgoing/blocks/$BLOCKS_LINUX
 echo "••• Installing Blocks and cleaning up. "
 tar -xzf $BLOCKS_LINUX
