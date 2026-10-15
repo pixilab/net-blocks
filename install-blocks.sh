@@ -71,6 +71,7 @@ apt install -y  chromium-headless-shell
 
 echo "••• Installing License Key Software"
 # download and install codemeter support from our mirror
+apt install -y wget
 wget https://pixilab.se/outgoing/blocks/cloud-support/codemeter.deb
 apt install -y  ./codemeter.deb
 rm ./codemeter.deb
