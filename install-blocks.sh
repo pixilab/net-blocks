@@ -16,9 +16,9 @@ fi
 
 echo "••• Bumping max number of file descriptors (for, e.g., websockets)"
 FDS=10000
-echo "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/user.conf
-echo "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/system.conf
-echo "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/security/limits.conf
+echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/user.conf
+echo -e "\nDefaultLimitNOFILE=$FDS\n" >> /etc/systemd/system.conf
+echo -e "*       soft    nofile  $FDS\n*       hard    nofile  $FDS\n" >> /etc/security/limits.conf
 
 echo "••• Adding the blocks user account. Set a password later using this command: sudo passwd blocks"
 # Check if user blocks already exists
