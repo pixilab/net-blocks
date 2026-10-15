@@ -52,7 +52,7 @@ Enter your credentials if requested.
 
 `chmod u+x *.sh`
 
-`sudo ./install-blocks.sh`
+`sudo bash ./install-blocks.sh`
 
 Make sure the script makes it all the way to "••• DONE!". If not, examine the output for errors and correct script and files as necessary to complete the installation.  
 If the output shown at the end of the script run does not include your Blocks license number, you must obtain a cloud license from PIXILAB.   
@@ -101,7 +101,7 @@ To install NGINX as reverse proxy in front of Blocks server, first exit any prev
 
 Then run the _install-nginx_ script:
 
-`sudo ./install-nginx.sh`
+`sudo bash ./install-nginx.sh`
 
 ## Internet Domain Name and HTTPS
 **IMPORTANT**: This section applies primarily to cloud-based servers. If you're using this script to install Blocks on an on-premise server, you must first make sure that port 80 and 443 of your server is accessible from the internet, using your domain name. It must remain internet accessible for letsencrypt's automatic certificate renewal.
@@ -112,7 +112,7 @@ You should now run a preflight test of the domain name to make sure that the "ht
 
 Once that has been done successfully, run this script to set up the letsencrypt HTTPS certificate: 
 
-`sudo ./add-domain.sh <blocks-server-domain-name>`
+`sudo bash ./add-domain.sh <blocks-server-domain-name>`
 
 Enter your email address and other preferences when prompted by the certbot.
 
