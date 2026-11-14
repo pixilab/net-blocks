@@ -54,28 +54,32 @@ Enter your credentials if requested.
 
 `sudo bash ./install-blocks.sh`
 
-Make sure the script makes it all the way to "••• DONE!". If not, examine the output for errors and correct script and files as necessary to complete the installation.  
-If the output shown at the end of the script run does not include your Blocks license number, you must obtain a cloud license from PIXILAB.   
-The license is delivered as a file, which is then transferred to the server and imported to the license system.  
+Make sure the script makes it all the way to "••• DONE!". If not, examine the output for errors and correct script and files as necessary to complete the installation. If the output shown at the end of the script run does not include your Blocks license number, you must obtain a cloud license from PIXILAB. The license is delivered as a file, which is then transferred to the server and imported to the license system.  
 
 To transfer a license file use scp in the terminal of the computer where you corrently keep the license file:
 
-`scp <your-local-file> <user>@<ip-of-your-server>:./net-blocks`
+`scp <your-local-license-file> <user>@<ip-of-your-server>:~/net-blocks`
 
-In the terminal of the remote computer you shold now be able to see the copied file inside the _net-blocks_ directory.
+In the terminal of the remote computer you shold now find the transferred license file inside the _net-blocks_ directory:
  
+`cd ~/net-blocks`<br>
+`ls`
 
-After successfully upload of the license file, run the import with this command from the directory where the file is uploaded:
+Import the license file by running this command from within the net-blocks directory:
 
 `cmu --import --file <filename>`
 
-Verify that the license is imported OK using the command `cmu --list`, which should now show your license number.  
-Set a password for the _blocks_ user using the command:
+Verify that the license is imported:
+
+`cmu --list`
+
+Which should now show your license number.  
+
+Set a password for the _blocks_ user:
 
 `sudo passwd blocks`
 
-
-## Enable the server, start now and on boot
+## Enable the server to start now and on boot
 Log out of the root account by enter this command:
 
 `exit`
@@ -92,7 +96,7 @@ Verify blocks was started OK
 
 `systemctl --user status blocks`
 
-Looking for its status being _Active: active (running)_
+Ensure that its status is shown as _Active: active (running)_
 
 ## Install NGINX
 To install NGINX as reverse proxy in front of Blocks server, first exit any previous SSH session, then log in to the server using ssh as the root (or a _sudoer_) user. 
