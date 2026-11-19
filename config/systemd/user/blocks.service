@@ -16,8 +16,9 @@ WorkingDirectory=%h
 TimeoutStopSec=40
 Restart=on-failure
 RestartSec=5
-LimitNOFILE=5000
 SuccessExitStatus=143
+# Allow number of files to use up to system's limit
+LimitNOFILE=infinity
 
 ExecStart=%h/java/bin/java \
     -Djava.library.path=%h/native:/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib \
